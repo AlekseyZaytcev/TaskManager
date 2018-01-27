@@ -1,0 +1,9 @@
+#addToDoList {
+    position: absolute;
+    left: 45%;
+    bottom: 1%;
+}
+.navbar {
+    background-color: #3073ad;
+    border-color: #245580;
+}

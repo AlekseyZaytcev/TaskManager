@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task manager</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<nav class="navbar">
+    <div class="container-fluid">
+        <div class="navbar-header">
+
+        </div>
+    </div>
+</nav>
+<h1 align="center">SIMPLE TODO LIST</h1>
+{% block content %}
+{% endblock %}
+
+<button type="button" id="addToDoList" class="btn btn-primary btn-lg">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add TODO List
+</button>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
