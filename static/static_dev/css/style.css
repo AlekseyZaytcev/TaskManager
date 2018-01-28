@@ -22,3 +22,10 @@
 	line-height: 15.4px;
 	color: white;
 }
+
+body {
+    background-image: url('../html-background.jpg');
+    background-repeat:no-repeat;
+    background-size:cover;
+    overflow-x:hidden;
+}
