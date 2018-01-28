@@ -14,7 +14,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-10">
-            <h3 class="navbar-text" style="color: white;">Wellcome {{ user.username }}!</h3>
+            <h3 id="greetings" class="navbar-text" >Wellcome {{ user.username }}!</h3>
             </div>
             <div class="col-md-2">
                 {% if user.is_anonymous %}

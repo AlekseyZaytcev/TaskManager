@@ -12,3 +12,13 @@
 .btn {
     border-color: #000;
 }
+
+#greetings {
+    font-family: Haettenschweiler;
+	font-size: 40px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 15.4px;
+	color: white;
+}
