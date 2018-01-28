@@ -20,18 +20,18 @@
                 {% if user.is_anonymous %}
                 <div class="container">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-default navbar-btn">Log in</button>
+                        <button type="button" class="btn btn-primary mr-sm-2 navbar-btn ">Log in</button>
                         <p class="navbar-text" style="color: white;">or</p>
-                        <button type="button" class="btn btn-default navbar-btn">Sign in</button>
+                        <button type="button" class="btn btn-primary mr-sm-2 navbar-btn" >Sign in</button>
                     </div>
                 </div>
                 {% else %}
                 {% if user.is_authenticated %}
                 {% if user.is_superuser %}
-                <a href="/admin/" class="btn btn-primary active mr-sm-2 navbar-btn" role="button"
+                <a href="/admin/" class="btn btn-primary mr-sm-2 navbar-btn" role="button"
                    aria-pressed="true">Admin page</a>
                 {% endif %}
-                <a href="{% url 'logout' %}" class="btn btn-primary active navbar-btn" role="button" aria-pressed="true">LogOut</a>
+                <a href="{% url 'logout' %}" class="btn btn-primary mr-sm-2 navbar-btn" role="button" aria-pressed="true">LogOut</a>
                 {% endif %}
                 {% endif %}
             </div>
