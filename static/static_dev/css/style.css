@@ -1,12 +1,13 @@
 #addToDoList {
     position: absolute;
     left: 45%;
-    bottom: 1%;
+    bottom: 3%;
 }
 .navbar {
     background-color: #3073ad;
     border-color: #245580;
     border-radius: 0px;
+    border-color: #000;
 }
 
 .btn {

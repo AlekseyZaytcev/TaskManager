@@ -13,17 +13,13 @@
 <nav class="navbar">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-10">
-            <h3 id="greetings" class="navbar-text" >Wellcome {{ user.username }}!</h3>
+            <div class="col-md-11">
+                <h3 id="greetings" class="navbar-text">Wellcome {{ user.username }}!</h3>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-1">
                 {% if user.is_anonymous %}
                 <div class="container">
-                    <div class="btn-group">
                         <button type="button" class="btn btn-primary mr-sm-2 navbar-btn ">Log in</button>
-                        <p class="navbar-text" style="color: white;">or</p>
-                        <button type="button" class="btn btn-primary mr-sm-2 navbar-btn" >Sign in</button>
-                    </div>
                 </div>
                 {% else %}
                 {% if user.is_authenticated %}
@@ -31,14 +27,14 @@
                 <a href="/admin/" class="btn btn-primary mr-sm-2 navbar-btn" role="button"
                    aria-pressed="true">Admin page</a>
                 {% endif %}
-                <a href="{% url 'logout' %}" class="btn btn-primary mr-sm-2 navbar-btn" role="button" aria-pressed="true">LogOut</a>
+                <a href="{% url 'logout' %}" class="btn btn-primary mr-sm-2 navbar-btn" role="button"
+                   aria-pressed="true">LogOut</a>
                 {% endif %}
                 {% endif %}
             </div>
         </div>
     </div>
 </nav>
-<h1 align="center">SIMPLE TODO LIST</h1>
 {% block content %}
 {% endblock content%}
 
@@ -46,6 +42,79 @@
 <button type="button" id="addToDoList" class="btn btn-primary btn-lg">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add TODO List
 </button>
+{% else %}
+<div class="container">
+    <div class="jumbotron jumbotron-codelines">
+        <div class="container-lg p-responsive position-relative">
+            <div class="d-md-flex flex-items-center gutter-md-spacious">
+                <div class="col-md-7 text-center text-md-left ">
+                    <h1 class="alt-h0 text-white lh-condensed-ultra mb-3">Simple To-Do list</h1>
+                    <p class="alt-lead mb-4">
+                        This is my own web application, designed for management personal projects.
+                        It's may help control tasks in projects.
+                    </p>
+                </div>
+                <div class="mx-auto col-sm-8 col-md-5 hide-sm">
+                    <div class="rounded-1 text-gray bg-gray-light py-4 px-4 px-md-3 px-lg-4">
+                        <!-- '"` --><!-- </textarea></xmp> -->
+                        <form accept-charset="UTF-8" action="/join" autocomplete="off"
+                              class="home-hero-signup js-signup-form" method="post">
+
+                            <dl class="form-group mt-0">
+                                <dt class="input-label">
+                                    <label class="form-label f5" for="user[login]">Username</label>
+                                </dt>
+                                <dd>
+                                    <input name="user[login]" id="user[login]"
+                                           class="form-control form-control-lg input-block"
+                                           placeholder="Pick a username"
+                                           autofocus="" type="text">
+                                </dd>
+                            </dl>
+                            <dl class="form-group">
+                                <dt class="input-label">
+                                    <label class="form-label f5" for="user[email]">Email</label>
+                                </dt>
+                                <dd>
+                                    <input name="user[email]" id="user[email]"
+                                           class="form-control form-control-lg input-block js-email-notice-trigger"
+                                           placeholder="you@example.com"
+                                           type="text">
+                                </dd>
+                            </dl>
+                            <dl class="form-group">
+                                <dt class="input-label">
+                                    <label class="form-label f5" for="user[password]">Password</label>
+                                </dt>
+                                <dd>
+                                    <input name="user[password]" id="user[password]"
+                                           class="form-control form-control-lg input-block"
+                                           placeholder="Create a password"
+                                           type="password">
+                                </dd>
+                                <p class="form-control-note">Use at least one letter, one numeral, and seven
+                                    characters.</p>
+                            </dl>
+
+                            <button class="btn btn-primary btn-large f4 btn-block" type="submit"
+                            >Sign up for TaskManager
+                            </button>
+                            <p class="form-control-note mb-0 text-center">
+                                By clicking "Sign up for TaskManager", you agree to do all what you want. This is open
+                                source project.
+                            </p>
+
+                        </form>
+                    </div>
+                </div>
+                <blockquote>
+                    <p style="font-size: 12px;">“You can't make up for lost time. You can only do better in the future.”</p>
+                    <footer style="font-size: 10px;">Ashley Ormon</footer>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+</div>
 {% endif%}
 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
