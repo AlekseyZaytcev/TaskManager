@@ -13,13 +13,31 @@
 <nav class="navbar">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-11">
+            <div class="col-md-10">
                 <h3 id="greetings" class="navbar-text">Wellcome {{ user.username }}!</h3>
             </div>
-            <div class="col-md-1">
+            <div class="col-md-2">
                 {% if user.is_anonymous %}
                 <div class="container">
-                        <button type="button" class="btn btn-primary mr-sm-2 navbar-btn ">Log in</button>
+                    <button type="button" id="login" class="btn btn-primary mr-sm-2 navbar-btn " data-toggle="popover">
+                        Log in
+                    </button>
+
+                    <div id="popover-login-form" class="hide">
+                        <form id="login-form" method="POST">{% csrf_token %}
+                            <div class="form-group">
+                                <label for="logInInputNick">Nickname</label>
+                                <input type="text" class="form-control" id="logInInputNick" placeholder="Nickname">
+                            </div>
+                            <div class="form-group">
+                                <label for="loginInputPassword">Password</label>
+                                <input type="password" class="form-control" id="logInInputPassword"
+                                       placeholder="*******">
+                            </div>
+                            <button type="submit" class="btn btn-primary mr-sm-2">Login</button>
+                        </form>
+                    </div>
+
                 </div>
                 {% else %}
                 {% if user.is_authenticated %}
@@ -108,7 +126,8 @@
                     </div>
                 </div>
                 <blockquote>
-                    <p style="font-size: 12px;">“You can't make up for lost time. You can only do better in the future.”</p>
+                    <p style="font-size: 12px;">“You can't make up for lost time. You can only do better in the
+                        future.”</p>
                     <footer style="font-size: 10px;">Ashley Ormon</footer>
                 </blockquote>
             </div>
@@ -118,5 +137,6 @@
 {% endif%}
 <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
 </body>
 </html>
