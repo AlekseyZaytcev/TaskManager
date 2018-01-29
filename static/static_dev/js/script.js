@@ -10,14 +10,12 @@ $("#login").popover({
 
 $(document).on('submit', '#login-form', function(e) {
     e.preventDefault();
+    var data = $('#login-form input').serialize();
+    data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
     $.ajax({
             url: '/login/',
             type: 'POST',
-            data: {
-                username: $('input#logInInputNick').val(),
-                password: $('input#logInInputPassword').val(),
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
-            },
+            data: data,
         })
         .done(function() {
             location.reload();
