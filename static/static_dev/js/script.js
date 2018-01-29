@@ -28,3 +28,24 @@ $(document).on('submit', '#login-form', function(e) {
         });
 
 });
+
+$(document).on('submit', '#createUser', function(e) {
+    e.preventDefault();
+    var data = $('#createUser input').serialize();
+    data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
+    $.ajax({
+            url: '/createUser/',
+            type: 'POST',
+            data: data,
+        })
+        .done(function() {
+            location.reload();
+        })
+        .fail(function() {
+            console.log("error");
+        })
+        .always(function() {
+            console.log("complete");
+        });
+
+});
