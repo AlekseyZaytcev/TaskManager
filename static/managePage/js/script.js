@@ -11,7 +11,6 @@ $("#login").popover({
 $(document).on('submit', '#login-form', function(e) {
     e.preventDefault();
     var data = $('#login-form input').serialize();
-    data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
     $.ajax({
             url: '/login/',
             type: 'POST',
@@ -32,7 +31,6 @@ $(document).on('submit', '#login-form', function(e) {
 $(document).on('submit', '#createUser', function(e) {
     e.preventDefault();
     var data = $('#createUser input').serialize();
-    data.csrfmiddlewaretoken = $('input[name=csrfmiddlewaretoken]').val();
     $.ajax({
             url: '/createUser/',
             type: 'POST',
@@ -47,5 +45,4 @@ $(document).on('submit', '#createUser', function(e) {
         .always(function() {
             console.log("complete");
         });
-
 });
