@@ -53,13 +53,15 @@
         </div>
     </div>
 </nav>
+
+{% if user.is_authenticated %}
 {% block content %}
 {% endblock content%}
 
-{% if user.is_authenticated %}
 <button type="button" id="addToDoList" class="btn btn-primary btn-lg">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add TODO List
 </button>
+
 {% else %}
 <div class="container">
     <div class="jumbotron jumbotron-codelines">
