@@ -35,14 +35,19 @@ body {
     margin-left: 8%;
 }
 
+#overflow {
+    height: 760px;
+    width: 50%;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+}
+
 .todo-content {
-    margin-left: 25%;
-    margin-right: 25%;
     background-color: white;
     border-style: groove;
-    border-width: 2px;
-    border-bottom-left-radius: 20px;
-    border-bottom-right-radius: 20px;
+    border-width: 1px;
+    border-radius: 5px;
 }
 
 .navbar-btn-group {
@@ -53,6 +58,10 @@ body {
     color: white;
     text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
+.chevron{
+    margin-right: 0px;
+    margin-left: 0px;
+}
 
 .task-buttons {
     padding: 1px 6px;
@@ -62,3 +71,15 @@ body {
 position: absolute;
     left: 88%;
 }
+
+#projectAddModalWindow{margin: 20% auto;}
+#newTaskInput{
+    width:85%;
+    padding: 1px 1px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.newTaskButton{
+    margin-bottom: 3px;
+}
+.projectbar{margin-bottom: 0px;}

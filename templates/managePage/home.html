@@ -2,56 +2,114 @@
 
 
 {% block content %}
-<form class="todo-content">
-    <nav class="navbar">
-        <div class="row">
-            <div class="container-fluid">
-                <div class="col-md-10">
-                    <h3 class="navbar-text project-name"><span
-                            class="glyphicon glyphicon-list"
-                            aria-hidden="true"></span> Ololo
-                    </h3>
-                </div>
-                <div class="col-md-2">
-                    <div class="container">
-                        <div class="btn-group navbar-btn-group" role="group">
-                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"
-                                                                                aria-hidden="true"
-                                                                                style="color: black;"></span></button>
-                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-trash"
-                                                                                aria-hidden="true"
-                                                                                style="color: black;"></span></button>
+<div class="container" id="overflow">
+    {% for project in projects_list %}
+
+    <form class="todo-content" id="create{{project.id}}Form" method="post">{% csrf_token %}
+        <nav class="navbar projectbar">
+            <div class="row">
+                <div class="container-fluid">
+                    <div class="col-md-10">
+                        <h3 class="navbar-text project-name chevron" data-toggle="collapse" href="#collapse{{project.id}}">
+                            <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h3>
+                        <h3 class="navbar-text project-name " ><span
+                                class="glyphicon glyphicon-list"
+                                aria-hidden="true"></span> {{project.project_name}}
+                        </h3>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="container">
+                            <div class="btn-group navbar-btn-group" role="group">
+                                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"
+                                                                                    aria-hidden="true"
+                                                                                    style="color: black;"></span>
+                                </button>
+                                <button type="button" class="btn btn-default" id="{{project.id}}"
+                                        onclick="deleteProject(this)"><span class="glyphicon glyphicon-trash"
+                                                                            aria-hidden="true"
+                                                                            style="color: black;"></span></button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
 
-    <ul class="list-group">
-        <li class="list-group-item" style="radius: 0px">
-            <form>
-                <div class="form-group" style="margin-top: 3px; margin-bottom: 3px;">
-                    <input type="checkbox">
-                    <span class="border-right-0" style="margin-left: 10px;border-left: 2px dotted black;"></span>
-                    <span class="border-right-0" style="margin-left: 10px;">Cras justo odio</span>
-
-                    <div class="btn-group task-btgroups" role="group">
-                        <button type="button" class="btn btn-xs task-buttons"><span class="glyphicon glyphicon-sort"
-                                                                            aria-hidden="true"
-                                                                            style="color: gray;"></span></button>
-                        <button type="button" class="btn btn-xs task-buttons"><span class="glyphicon glyphicon-pencil"
-                                                                            aria-hidden="true"
-                                                                            style="color: gray;"></span></button>
-                        <button type="button" class="btn btn-xs task-buttons"><span class="glyphicon glyphicon-trash"
-                                                                            aria-hidden="true"
-                                                                            style="color: gray;"></span></button>
+        <ul class="list-group collapse" id="collapse{{project.id}}">
+            <li class="list-group-item" style="radius: 0px">
+                <form method="post">
+                    <div class="form-group" style="margin-top: 1px; margin-bottom: 1px;">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true" style="color: gray;"></span>
+                        <input type="text" id="newTaskInput" name="task_name" form="create{{project.id}}Form" required>
+                        <input type="hidden" form="create{{project.id}}Form" name="project_id" value="{{project.id}}">
+                        <button type="submit" class="btn btn-xs btn-default newTaskButton" id="create{{project.id}}"
+                                onclick="createTask(this)">
+                            Add Task
+                        </button>
                     </div>
+                </form>
+            </li>
+            {% for task in tasks_list %}
+            {% if task.project_id == project %}
+            <li class="list-group-item" style="radius: 0px">
+                <div>
+                    <div class="form-group" style="margin-top: 3px; margin-bottom: 3px;">
+                        <input type="checkbox">
+                        <span class="border-right-0" style="margin-left: 10px;border-left: 2px dotted black;"></span>
+                        <span class="border-right-0" style="margin-left: 10px;">{{ task.task_name }}</span>
 
+                        <div class="btn-group task-btgroups" role="group">
+                            <button type="button" class="btn btn-xs task-buttons"><span class="glyphicon glyphicon-sort"
+                                                                                        aria-hidden="true"
+                                                                                        style="color: gray;"></span>
+                            </button>
+                            <button type="button" class="btn btn-xs task-buttons"><span
+                                    class="glyphicon glyphicon-pencil"
+                                    aria-hidden="true"
+                                    style="color: gray;"></span>
+                            </button>
+                            <button type="button" class="btn btn-xs task-buttons" id="{{task.id}}"
+                                    onclick="deleteTask(this)"><span
+                                    class="glyphicon glyphicon-trash"
+                                    aria-hidden="true"
+                                    style="color: gray;"></span>
+                            </button>
+                        </div>
+
+                    </div>
                 </div>
-            </form>
-        </li>
-    </ul>
-</form>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </form>
+    <br>
+
+    {% endfor %}
+</div>
+<!-- Modal for add project -->
+<div class="modal fade" id="projectModalAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" id="projectAddModalWindow" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Create Project</h2>
+            </div>
+            <div class="modal-body">
+                <form id="newProject" method="post">{% csrf_token %}
+                    <div class="form-group">
+                        <label for="newProjectName">What is your new project?</label>
+                        <input type="text" name="projectName" id="newProjectName" form="newProject"
+                               class="form-control" required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Add Project</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock content%}

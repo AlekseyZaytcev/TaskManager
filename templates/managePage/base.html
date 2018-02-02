@@ -24,7 +24,7 @@
                     </button>
 
                     <div id="popover-login-form" class="hide">
-                        <form id="login-form" method="POST">{% csrf_token %}
+                        <form id="login-form" method="post">{% csrf_token %}
                             <div class="form-group">
                                 <label for="logInUsername">Nickname</label>
                                 <input type="text" name="username" id="logInUsername" form="login-form" class="form-control" placeholder="Nickname">
@@ -58,7 +58,7 @@
 {% block content %}
 {% endblock content%}
 
-<button type="button" id="addToDoList" class="btn btn-primary btn-lg">
+<button type="button" id="addToDoList" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#projectModalAdd">
     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add TODO List
 </button>
 
@@ -78,7 +78,7 @@
                     <div class="rounded-1 text-gray bg-gray-light py-4 px-4 px-md-3 px-lg-4">
                         <!-- '"` --><!-- </textarea></xmp> -->
                         <form id="createUser" accept-charset="UTF-8"  autocomplete="off"
-                              class="home-hero-signup js-signup-form" method="POST">{% csrf_token %}
+                              class="home-hero-signup js-signup-form" method="post">{% csrf_token %}
 
                             <dl class="form-group mt-0">
                                 <dt class="input-label">
@@ -140,5 +140,7 @@
 <script src="{% static 'managePage/js/jquery-3.3.1.min.js' %}"></script>
 <script src="{% static 'managePage/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'managePage/js/script.js' %}"></script>
+<script src="{% static 'managePage/js/project.js' %}"></script>
+<script src="{% static 'managePage/js/task.js' %}"></script>
 </body>
 </html>

@@ -5,10 +5,19 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.http import Http404
 
-
 # Create your views here.
+from managePage.models import Project, Task
+
+
 def home(request):
-    return render(request, 'managePage/home.html')
+    context = {}
+    if request.user.is_authenticated:
+        current_user = request.user
+        projects_list = Project.objects.all().filter(user_id=current_user)
+        tasks_list = Task.objects.all()
+        context = {'projects_list': projects_list,
+               'tasks_list': tasks_list,}
+    return render(request, 'managePage/home.html', context)
 
 
 def create_user(request):
@@ -49,3 +58,43 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('home')
+
+
+def create_project(request):
+    if request.method == 'POST':
+        user_id = request.user
+        project_name = request.POST['projectName']
+        Project.objects.create(
+            user_id=user_id,
+            project_name=project_name
+        )
+        return HttpResponse('200')
+
+
+def delete_project(request):
+    if request.method == 'POST':
+        project_id = request.POST.get('projectId')
+        project = Project.objects.get(id=project_id)
+        project.delete()
+        return HttpResponse('200')
+
+
+def create_task(request):
+    if request.method == 'POST':
+        task_name = request.POST['task_name']
+        project_id = request.POST['project_id']
+        project = Project.objects.get(id=project_id)
+        print(project)
+        Task.objects.create(
+            task_name=task_name,
+            project_id = project
+        )
+        return HttpResponse('200')
+
+
+def delete_task(request):
+    if request.method == 'POST':
+        task_id = request.POST['taskId']
+        task = Task.objects.get(id=task_id)
+        task.delete()
+        return HttpResponse('200')
