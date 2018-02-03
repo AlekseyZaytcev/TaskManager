@@ -5,14 +5,15 @@
 <div class="container" id="overflow">
     {% for project in projects_list %}
 
-    <form class="todo-content" id="create{{project.id}}Form" method="post">{% csrf_token %}
+    <form class="todo-content" method="post">{% csrf_token %}
         <nav class="navbar projectbar">
             <div class="row">
                 <div class="container-fluid">
                     <div class="col-md-10">
-                        <h3 class="navbar-text project-name chevron" data-toggle="collapse" href="#collapse{{project.id}}">
+                        <h3 class="navbar-text project-name chevron" data-toggle="collapse"
+                            href="#collapse{{project.id}}">
                             <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h3>
-                        <h3 class="navbar-text project-name " ><span
+                        <h3 class="navbar-text project-name "><span
                                 class="glyphicon glyphicon-list"
                                 aria-hidden="true"></span> {{project.project_name}}
                         </h3>
@@ -34,34 +35,42 @@
                 </div>
             </div>
         </nav>
+    </form>
 
-        <ul class="list-group collapse" id="collapse{{project.id}}">
-            <li class="list-group-item" style="radius: 0px">
-                <form method="post">
-                    <div class="form-group" style="margin-top: 1px; margin-bottom: 1px;">
-                        <span class="glyphicon glyphicon-plus" aria-hidden="true" style="color: gray;"></span>
-                        <input type="text" id="newTaskInput" name="task_name" form="create{{project.id}}Form" required>
-                        <input type="hidden" form="create{{project.id}}Form" name="project_id" value="{{project.id}}">
-                        <button type="submit" class="btn btn-xs btn-default newTaskButton" id="create{{project.id}}"
-                                onclick="createTask(this)">
-                            Add Task
-                        </button>
-                    </div>
-                </form>
-            </li>
+    <!--form for create new Task in Project-->
+    <ul class="list-group collapse" id="collapse{{project.id}}">
+        <li class="list-group-item" style="radius: 0px">
+            <form id="create{{project.id}}Form" method="post">{% csrf_token %}
+                <div class="form-group" style="margin-top: 1px; margin-bottom: 1px;">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true" style="color: gray;"></span>
+                    <input type="text" id="newTaskInput" name="task_name" form="create{{project.id}}Form" required>
+                    <input type="hidden" form="create{{project.id}}Form" name="project_id" value="{{project.id}}">
+                    <button type="button" class="btn btn-xs btn-default newTaskButton" id="create{{project.id}}"
+                            onclick="createTask(this)">
+                        Add Task
+                    </button>
+                </div>
+            </form>
+        </li>
+
+        <div id="create{{project.id}}List">
             {% for task in tasks_list %}
             {% if task.project_id == project %}
+            <!--List with tasks-->
+
             <li class="list-group-item" style="radius: 0px">
                 <div>
                     <div class="form-group" style="margin-top: 3px; margin-bottom: 3px;">
                         <input type="checkbox">
-                        <span class="border-right-0" style="margin-left: 10px;border-left: 2px dotted black;"></span>
+                        <span class="border-right-0"
+                              style="margin-left: 10px;border-left: 2px dotted black;"></span>
                         <span class="border-right-0" style="margin-left: 10px;">{{ task.task_name }}</span>
 
                         <div class="btn-group task-btgroups" role="group">
-                            <button type="button" class="btn btn-xs task-buttons"><span class="glyphicon glyphicon-sort"
-                                                                                        aria-hidden="true"
-                                                                                        style="color: gray;"></span>
+                            <button type="button" class="btn btn-xs task-buttons"><span
+                                    class="glyphicon glyphicon-sort"
+                                    aria-hidden="true"
+                                    style="color: gray;"></span>
                             </button>
                             <button type="button" class="btn btn-xs task-buttons"><span
                                     class="glyphicon glyphicon-pencil"
@@ -81,8 +90,8 @@
             </li>
             {% endif %}
             {% endfor %}
-        </ul>
-    </form>
+        </div>
+    </ul>
     <br>
 
     {% endfor %}

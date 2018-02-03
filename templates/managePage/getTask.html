@@ -1,0 +1,40 @@
+{% for project in projects_list %}
+<div id="create{{project.id}}List">
+{% for task in tasks_list %}
+{% if task.project_id == project %}
+<!--List with tasks-->
+
+
+    <li class="list-group-item" style="radius: 0px">
+        <div>
+            <div class="form-group" style="margin-top: 3px; margin-bottom: 3px;">
+                <input type="checkbox">
+                <span class="border-right-0" style="margin-left: 10px;border-left: 2px dotted black;"></span>
+                <span class="border-right-0" style="margin-left: 10px;">{{ task.task_name }}</span>
+
+                <div class="btn-group task-btgroups" role="group">
+                    <button type="button" class="btn btn-xs task-buttons"><span class="glyphicon glyphicon-sort"
+                                                                                aria-hidden="true"
+                                                                                style="color: gray;"></span>
+                    </button>
+                    <button type="button" class="btn btn-xs task-buttons"><span
+                            class="glyphicon glyphicon-pencil"
+                            aria-hidden="true"
+                            style="color: gray;"></span>
+                    </button>
+                    <button type="button" class="btn btn-xs task-buttons" id="{{task.id}}"
+                            onclick="deleteTask(this)"><span
+                            class="glyphicon glyphicon-trash"
+                            aria-hidden="true"
+                            style="color: gray;"></span>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </li>
+
+{% endif %}
+{% endfor %}
+</div>
+{% endfor %}
