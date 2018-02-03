@@ -1,0 +1,57 @@
+{% for project in projects_list %}
+
+<form class="todo-content" id="navbar{{project.id}}" method="post">{% csrf_token %}
+    <nav class="navbar projectbar">
+        <div class="row">
+            <div class="container-fluid">
+                <div class="col-md-10">
+                    <h3 class="navbar-text project-name chevron" data-toggle="collapse"
+                        href="#collapse{{project.id}}">
+                        <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h3>
+                    <h3 class="navbar-text project-name "><span
+                            class="glyphicon glyphicon-list"
+                            aria-hidden="true"></span> {{project.project_name}}
+                    </h3>
+                </div>
+                <div class="col-md-2">
+                    <div class="container">
+                        <div class="btn-group navbar-btn-group" role="group">
+                            <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"
+                                                                                aria-hidden="true"
+                                                                                style="color: black;"></span>
+                            </button>
+                            <button type="button" class="btn btn-default" id="{{project.id}}"
+                                    onclick="deleteProject(this)"><span class="glyphicon glyphicon-trash"
+                                                                        aria-hidden="true"
+                                                                        style="color: black;"></span></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</form>
+
+<!--form for create new Task in Project-->
+<ul class="list-group collapse" id="collapse{{project.id}}">
+    <li class="list-group-item" style="radius: 0px">
+        <form id="create{{project.id}}Form" method="post">{% csrf_token %}
+            <div class="form-group" style="margin-top: 1px; margin-bottom: 1px;">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true" style="color: gray;"></span>
+                <input type="text" id="newTaskInput" name="task_name" form="create{{project.id}}Form" required>
+                <input type="hidden" form="create{{project.id}}Form" name="project_id" value="{{project.id}}">
+                <button type="button" class="btn btn-xs btn-default newTaskButton" id="create{{project.id}}"
+                        onclick="createTask(this)">
+                    Add Task
+                </button>
+            </div>
+        </form>
+    </li>
+
+    <div id="create{{project.id}}List">
+
+    </div>
+</ul>
+<br id="br{{project.id}}">
+
+{% endfor %}

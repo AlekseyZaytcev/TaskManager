@@ -5,7 +5,7 @@
 <div class="container" id="overflow">
     {% for project in projects_list %}
 
-    <form class="todo-content" method="post">{% csrf_token %}
+    <form class="todo-content" id="navbar{{project.id}}" method="post">{% csrf_token %}
         <nav class="navbar projectbar">
             <div class="row">
                 <div class="container-fluid">
@@ -92,7 +92,7 @@
             {% endfor %}
         </div>
     </ul>
-    <br>
+    <br id="br{{project.id}}">
 
     {% endfor %}
 </div>
@@ -113,7 +113,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Add Project</button>
+                        <button type="button" id="createProject" class="btn btn-primary">Add Project</button>
                     </div>
                 </form>
             </div>
