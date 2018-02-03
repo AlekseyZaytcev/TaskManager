@@ -59,6 +59,14 @@ def user_logout(request):
     return redirect('home')
 
 
+def get_project(request):
+    if request.method == 'GET':
+        current_user = request.user
+        project_name = request.GET['projectName']
+        projects_list = Project.objects.all().filter(user_id=current_user, project_name=project_name)
+        return render(request, 'managePage/getProject.html', {'projects_list': projects_list})
+
+
 def create_project(request):
     if request.method == 'POST':
         user_id = request.user

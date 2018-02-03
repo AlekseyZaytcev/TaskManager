@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^createUser/$', views.create_user, name='createUser'),
     url(r'^createProject/$', views.create_project, name='createProject'),
     url(r'^deleteProject/$', views.delete_project, name='deleteProject'),
+    url(r'^getProject/$', views.get_project, name='getProject'),
     url(r'^createTask/$', views.create_task, name='createTask'),
     url(r'^deleteTask/$', views.delete_task, name='deleteTask'),
     url(r'^getTask/$', views.get_task, name='getTask'),
