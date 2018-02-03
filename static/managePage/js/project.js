@@ -1,4 +1,4 @@
-$(document).on('submit', '#newProject', function(e) {
+$("#createProject").click( function(e) {
     e.preventDefault();
     var data = $('#newProject input').serialize();
     $.ajax({
@@ -8,7 +8,9 @@ $(document).on('submit', '#newProject', function(e) {
         })
         .done(function() {
             jQuery('#newProject')[0].reset();
-            location.reload();
+            $.get('/getProject/', data, function(result) {
+                $('#overflow').append(result);
+            });
         })
         .fail(function() {
             console.log("error");
@@ -31,7 +33,9 @@ function deleteProject(obj) {
             },
         })
         .done(function() {
-            location.reload();
+            $('#navbar' + projectId).remove();
+            $('#collapse' + projectId).remove();
+            $('#br' + projectId).remove();
         })
         .fail(function() {
             console.log("error");
