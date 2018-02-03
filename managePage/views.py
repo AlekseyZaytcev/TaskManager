@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from django.http import Http404
 
 # Create your views here.
 from managePage.models import Project, Task
@@ -16,7 +15,7 @@ def home(request):
         projects_list = Project.objects.all().filter(user_id=current_user)
         tasks_list = Task.objects.all()
         context = {'projects_list': projects_list,
-               'tasks_list': tasks_list,}
+                   'tasks_list': tasks_list, }
     return render(request, 'managePage/home.html', context)
 
 
@@ -79,15 +78,23 @@ def delete_project(request):
         return HttpResponse('200')
 
 
+def get_task(request):
+    if request.method == 'GET':
+        current_user = request.user
+        project_id = request.GET['project_id']
+        tasks_list = Task.objects.filter(project_id=project_id)
+        projects_list = Project.objects.all().filter(user_id=current_user, id=request.GET['project_id'])
+        return render(request, 'managePage/getTask.html', {'tasks_list': tasks_list, 'projects_list': projects_list})
+
+
 def create_task(request):
     if request.method == 'POST':
         task_name = request.POST['task_name']
         project_id = request.POST['project_id']
         project = Project.objects.get(id=project_id)
-        print(project)
         Task.objects.create(
             task_name=task_name,
-            project_id = project
+            project_id=project
         )
         return HttpResponse('200')
 
