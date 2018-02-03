@@ -1,7 +1,6 @@
 function createTask(obj) {
+    var listId = '#' + obj.id + 'List';
     var formId = '#' + obj.id + 'Form';
-    $(document).on('submit', formId, function(e) {
-    e.preventDefault();
     var data = $(formId + ' input').serialize();
     $.ajax({
             url: '/createTask/',
@@ -9,21 +8,19 @@ function createTask(obj) {
             data: data,
         })
         .done(function() {
-            jQuery(formId)[0].reset();
-            location.reload();
+            $(listId).load('/getTask/ ' + listId, data);
         })
         .fail(function() {
             console.log("error");
         })
         .always(function() {
             console.log("complete");
+            jQuery(formId)[0].reset();
         });
-});
 };
-
 function deleteTask(obj) {
     var task_id = obj.id;
- 
+
     $.ajax({
             url: '/deleteTask/',
             type: 'POST',
