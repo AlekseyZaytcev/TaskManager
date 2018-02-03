@@ -30,7 +30,7 @@ function deleteTask(obj) {
             },
         })
         .done(function() {
-            location.reload();
+            $('#' + task_id + 'Task').remove();
         })
         .fail(function() {
             console.log("error");
