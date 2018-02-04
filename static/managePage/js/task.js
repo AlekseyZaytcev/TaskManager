@@ -15,7 +15,7 @@ function createTask(obj) {
         })
         .always(function() {
             console.log("complete");
-            jQuery(formId)[0].reset();
+            $(formId)[0].reset();
         });
 };
 function deleteTask(obj) {
