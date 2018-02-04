@@ -7,7 +7,7 @@ $("#createProject").click( function(e) {
             data: data,
         })
         .done(function() {
-            jQuery('#newProject')[0].reset();
+            $('#newProject')[0].reset();
             $.get('/getProject/', data, function(result) {
                 $('#overflow').append(result);
             });
@@ -36,6 +36,38 @@ function deleteProject(obj) {
             $('#navbar' + projectId).remove();
             $('#collapse' + projectId).remove();
             $('#br' + projectId).remove();
+        })
+        .fail(function() {
+            console.log("error");
+        })
+        .always(function() {
+            console.log("complete");
+        });
+};
+
+function updateProject(obj) {
+    var textFieldId = obj.id + 'Text';
+    var updateFormId = obj.id + 'UpdateForm';
+    $('#' + textFieldId).toggle(250);
+    $('#' + updateFormId).toggle(250);
+};
+
+function updateProjectSend(obj) {
+    var updateFormId = obj.id + 'Form';
+    var data = $('#' + updateFormId + ' input').serialize();
+    $.ajax({
+            url: '/updateProject/',
+            type: 'POST',
+            data: data,
+        })
+        .done(function() {
+//            location.reload();
+            var name = $('#' + updateFormId + ' input[name="updatedProjectName"').val();
+            $('#' + updateFormId + ' input[name="updatedProjectName"').val('');
+            var projectNameId = '#' + obj.id.slice(0, -6) + 'Text';
+            $(projectNameId).html(name);
+            $('#' + updateFormId).toggle(250);
+            $(projectNameId).toggle(250);
         })
         .fail(function() {
             console.log("error");
