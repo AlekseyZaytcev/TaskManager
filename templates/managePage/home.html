@@ -9,21 +9,33 @@
         <nav class="navbar projectbar">
             <div class="row">
                 <div class="container-fluid">
-                    <div class="col-md-10">
+                    <div class="col-md-11">
                         <h3 class="navbar-text project-name chevron" data-toggle="collapse"
                             href="#collapse{{project.id}}">
                             <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span></h3>
-                        <h3 class="navbar-text project-name "><span
-                                class="glyphicon glyphicon-list"
-                                aria-hidden="true"></span> {{project.project_name}}
-                        </h3>
+                        <h3 class="navbar-text project-name">
+                            <span class="glyphicon glyphicon-list" aria-hidden="true"></span></h3>
+                        <h3 class="navbar-text project-name" id="update{{project.id}}Text">
+                            {{project.project_name}}</h3>
+                        <div class="form-group navbar-text" style="margin-top:15px;width:84%"
+                             id="update{{project.id}}UpdateForm" hidden>
+                            {% csrf_token %}
+                            <input type="text" placeholder="Change your task" name="updatedProjectName"
+                                   style="width:85%">
+                            <input type="hidden" name="id" value="{{project.id}}">
+                            <button class="btn btn-sm btn-default newTaskButton" id="update{{project.id}}Update"
+                                    onclick="updateProjectSend(this)" type="button">Change
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <div class="container">
-                            <div class="btn-group navbar-btn-group" role="group">
-                                <button type="button" class="btn btn-default"><span class="glyphicon glyphicon-pencil"
-                                                                                    aria-hidden="true"
-                                                                                    style="color: black;"></span>
+                            <div class="btn-group navbar-btn-group group-btn-upd-del" role="group">
+                                <button type="button" class="btn btn-default" id="update{{project.id}}"
+                                        onclick="updateProject(this)"><span
+                                        class="glyphicon glyphicon-pencil"
+                                        aria-hidden="true"
+                                        style="color: black;"></span>
                                 </button>
                                 <button type="button" class="btn btn-default" id="{{project.id}}"
                                         onclick="deleteProject(this)"><span class="glyphicon glyphicon-trash"
