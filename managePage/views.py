@@ -86,6 +86,14 @@ def delete_project(request):
         return HttpResponse('200')
 
 
+def update_project(request):
+    if request.method == 'POST':
+        projectName = request.POST['updatedProjectName']
+        projectId = request.POST['id']
+        Project.objects.filter(id=projectId).update(project_name=projectName)
+        return HttpResponse('200')
+
+
 def get_task(request):
     if request.method == 'GET':
         current_user = request.user
