@@ -21,7 +21,7 @@ $("#createProject").click( function(e) {
 });
 
 function deleteProject(obj) {
-    var projectId = obj.id;
+    var projectId = obj.id.slice(0, -9).slice(7);
 
  
     $.ajax({
@@ -46,8 +46,9 @@ function deleteProject(obj) {
 };
 
 function updateProject(obj) {
-    var textFieldId = obj.id + 'Text';
-    var updateFormId = obj.id + 'UpdateForm';
+    var baseId = obj.id.slice(0, -9);
+    var textFieldId = baseId + 'Text';
+    var updateFormId = baseId + 'UpdateForm';
     $('#' + textFieldId).toggle(250);
     $('#' + updateFormId).toggle(250);
 };

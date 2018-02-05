@@ -1,5 +1,5 @@
 function createTask(obj) {
-    var listId = '#' + obj.id + 'List';
+    var listId = '#' + obj.id.slice(0, -6) + 'List';
     var formId = '#' + obj.id + 'Form';
     var data = $(formId + ' input').serialize();
     $.ajax({
@@ -19,7 +19,7 @@ function createTask(obj) {
         });
 };
 function deleteTask(obj) {
-    var task_id = obj.id;
+    var task_id = obj.id.slice(4).slice(0, - 6);
 
     $.ajax({
             url: '/deleteTask/',
@@ -30,7 +30,7 @@ function deleteTask(obj) {
             },
         })
         .done(function() {
-            $('#' + task_id + 'Task').remove();
+            $('#Task' + task_id + 'Task').remove();
         })
         .fail(function() {
             console.log("error");
