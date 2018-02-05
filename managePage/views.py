@@ -121,3 +121,11 @@ def delete_task(request):
         task = Task.objects.get(id=task_id)
         task.delete()
         return HttpResponse('200')
+
+
+def update_task(request):
+    if request.method == 'POST':
+        taskName = request.POST['updatedTaskName']
+        taskId = request.POST['id']
+        Task.objects.filter(id=taskId).update(task_name=taskName)
+        return HttpResponse('200')
