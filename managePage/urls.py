@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^getProject/$', views.get_project, name='getProject'),
     url(r'^createTask/$', views.create_task, name='createTask'),
     url(r'^deleteTask/$', views.delete_task, name='deleteTask'),
+    url(r'^updateTask/$', views.update_task, name='updateTask'),
     url(r'^getTask/$', views.get_task, name='getTask'),
 ]
