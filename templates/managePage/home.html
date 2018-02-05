@@ -20,7 +20,7 @@
                         <div class="form-group navbar-text" style="margin-top:15px;width:84%"
                              id="update{{project.id}}UpdateForm" hidden>
                             {% csrf_token %}
-                            <input type="text" placeholder="Change your task" name="updatedProjectName"
+                            <input type="text" placeholder="Change your project" name="updatedProjectName"
                                    style="width:85%">
                             <input type="hidden" name="id" value="{{project.id}}">
                             <button class="btn btn-sm btn-default newTaskButton" id="update{{project.id}}Update"
@@ -76,7 +76,17 @@
                         <input type="checkbox">
                         <span class="border-right-0"
                               style="margin-left: 10px;border-left: 2px dotted black;"></span>
-                        <span class="border-right-0" style="margin-left: 10px;">{{ task.task_name }}</span>
+                        <span class="border-right-0" id="{{task.id}}Text" style="margin-left: 10px;">{{ task.task_name }}</span>
+                        <div class="form-group task-btgroups updTask"
+                             id="{{task.id}}updateForm" hidden>
+                            {% csrf_token %}
+                            <input type="text" placeholder="Change your task" name="updatedTaskName"
+                                   style="width:85%">
+                            <input type="hidden" name="id" value="{{task.id}}">
+                            <button class="btn btn-xs btn-default newTaskButton" id="{{task.id}}update"
+                                    onclick="updateTaskSend(this)" type="button">Change
+                            </button>
+                        </div>
 
                         <div class="btn-group task-btgroups" role="group">
                             <button type="button" class="btn btn-xs task-buttons"><span
@@ -84,7 +94,8 @@
                                     aria-hidden="true"
                                     style="color: gray;"></span>
                             </button>
-                            <button type="button" class="btn btn-xs task-buttons"><span
+                            <button type="button" class="btn btn-xs task-buttons" id="{{task.id}}updater"
+                                    onclick="updateTask(this)"><span
                                     class="glyphicon glyphicon-pencil"
                                     aria-hidden="true"
                                     style="color: gray;"></span>
