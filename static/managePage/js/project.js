@@ -62,8 +62,8 @@ function updateProjectSend(obj) {
         })
         .done(function() {
 //            location.reload();
-            var name = $('#' + updateFormId + ' input[name="updatedProjectName"').val();
-            $('#' + updateFormId + ' input[name="updatedProjectName"').val('');
+            var name = $('#' + updateFormId + ' input[name="updatedProjectName"]').val();
+            $('#' + updateFormId + ' input[name="updatedProjectName"]').val('');
             var projectNameId = '#' + obj.id.slice(0, -6) + 'Text';
             $(projectNameId).html(name);
             $('#' + updateFormId).toggle(250);
