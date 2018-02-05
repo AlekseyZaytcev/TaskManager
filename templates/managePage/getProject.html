@@ -15,7 +15,7 @@
                     <div class="form-group navbar-text" style="margin-top:15px;width:84%"
                          id="update{{project.id}}UpdateForm" hidden>
                         {% csrf_token %}
-                        <input type="text" placeholder="Change your task" name="updatedProjectName"
+                        <input type="text" placeholder="Change your project" name="updatedProjectName"
                                style="width:85%">
                         <input type="hidden" name="id" value="{{project.id}}">
                         <button class="btn btn-sm btn-default newTaskButton" id="update{{project.id}}Update"
