@@ -71,3 +71,26 @@ function updateTaskSend(obj) {
             console.log("complete");
         });
 };
+function checkTask(obj) {
+    var project_id = obj.value;
+    var task_id = obj.id.slice(0, -8);
+    var createTaskFormId = '#Task' + project_id + 'CreateForm';
+    var updateDivId = '#Task' + project_id + 'List';
+    var data = $(createTaskFormId + ' input').serialize();
+    $.ajax({
+            url: '/checkTask/',
+            type: 'POST',
+            data: {
+                'id': task_id,
+            },
+        })
+        .done(function() {
+            $(updateDivId).load('/getTask/ ' + updateDivId, data);
+        })
+        .fail(function() {
+            console.log("error");
+        })
+        .always(function() {
+            console.log("complete");
+        });
+};
