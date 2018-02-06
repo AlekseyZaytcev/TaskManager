@@ -76,7 +76,7 @@
                         <input id="{{task.id}}Checkbox" value="{{project.id}}" onclick="checkTask(this)" type="checkbox" {% if task.status is True %} checked {% endif %}>
                         <span class="border-right-0"
                               style="margin-left: 10px;border-left: 2px dotted black;"></span>
-                        <label class="border-right-0 task_name" for="{{task.id}}Checkbox" id="Task{{task.id}}Text" {% if task.status is True %} style="text-decoration:line-through" {% endif %}>{{ task.task_name }}</label>
+                        <label class="border-right-0 task_name" for="{{task.id}}Checkbox" id="Task{{task.id}}Text" {% if task.status is True %} style="color: green;text-decoration:line-through" {% endif %}>{{ task.task_name }}</label>
                         <div class="form-group task-btgroups updTask"
                              id="Task{{task.id}}updateForm" hidden>
                             {% csrf_token %}
