@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
 # Create your views here.
+from django.views.decorators.csrf import csrf_exempt
+
 from managePage.models import Project, Task
 
 
@@ -128,4 +130,16 @@ def update_task(request):
         taskName = request.POST['updatedTaskName']
         taskId = request.POST['id']
         Task.objects.filter(id=taskId).update(task_name=taskName)
+        return HttpResponse('200')
+
+
+@csrf_exempt
+def check_task(request):
+    if request.method == 'POST':
+        taskId = request.POST['id']
+        task = Task.objects.filter(id=taskId)
+        if task[0].status == False:
+            task.update(status=True)
+        else:
+            task.update(status=False)
         return HttpResponse('200')
