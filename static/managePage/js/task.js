@@ -94,3 +94,21 @@ function checkTask(obj) {
             console.log("complete");
         });
 };
+
+function startdrag(event) {
+	idStartdrag = event.target.id.slice(0, -4).slice(4);
+	idProject = event.target.value;
+	var dt = event.dataTransfer;
+	dt.setData("text/plain", idProject);
+	dt.effectAllowed = 'copy';
+};
+
+function allowDrop(event) {
+	event.preventDefault();
+};
+
+function onDrop(event) {
+	  var data = event.dataTransfer.getData("text/plain");
+//	  event.target.textContent = data;
+	  event.preventDefault();
+	};
