@@ -96,10 +96,9 @@ function checkTask(obj) {
 };
 
 function startdrag(event) {
-	idStartdrag = event.target.id.slice(0, -4).slice(4);
-	idProject = event.target.value;
+	var idStartdrag = event.target.id.slice(0, -4).slice(4);
 	var dt = event.dataTransfer;
-	dt.setData("text/plain", idProject);
+	dt.setData("text/plain", idStartdrag);
 	dt.effectAllowed = 'copy';
 };
 
@@ -108,7 +107,17 @@ function allowDrop(event) {
 };
 
 function onDrop(event) {
-	  var data = event.dataTransfer.getData("text/plain");
-//	  event.target.textContent = data;
+	  var idStartdrag = event.dataTransfer.getData("text/plain");
+	  var idFinishdrag = event.target.id.slice(0, -4).slice(4);
+	  var project_id = event.target.value;
+	  var updateDivId = '#Task' + project_id + 'List';
+	  
+	  var data = {
+			  project_id: project_id,
+			  idStartdrag: idStartdrag,
+			  idFinishdrag: idFinishdrag,
+	  };
+	  
+	  $(updateDivId).load('/shiftTask/ ' + updateDivId, data);
 	  event.preventDefault();
 	};

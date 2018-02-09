@@ -143,3 +143,29 @@ def check_task(request):
         else:
             task.update(status=False)
         return HttpResponse('200')
+    
+    
+@csrf_exempt
+def shift_task(request):
+
+    if request.method == 'POST':
+        current_user = request.user
+        project_id = request.POST['project_id']
+        idStartdrag = request.POST['idStartdrag']
+        idFinishdrag = request.POST['idFinishdrag']
+        
+        task_startDrag = Task.objects.filter(project_id=project_id, id=idStartdrag)
+        task_finishDrag = Task.objects.filter(project_id=project_id, id=idFinishdrag)
+        
+        nameStart = task_startDrag[0].task_name
+        statusStart = task_startDrag[0].status
+        nameFinish = task_finishDrag[0].task_name
+        statusFinish = task_finishDrag[0].status
+        
+        Task.objects.filter(id=idStartdrag).update(task_name=nameFinish, status=statusFinish)
+        Task.objects.filter(id=idFinishdrag).update(task_name=nameStart, status=statusStart)
+        
+        tasks_list = Task.objects.filter(project_id=project_id)
+        projects_list = Project.objects.all().filter(user_id=current_user, id=project_id)
+        
+        return render(request, 'managePage/getTask.html', {'tasks_list': tasks_list, 'projects_list': projects_list})

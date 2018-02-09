@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'^updateTask/$', views.update_task, name='updateTask'),
     url(r'^getTask/$', views.get_task, name='getTask'),
     url(r'^checkTask/$', views.check_task, name='checkTask'),
+    url(r'^shiftTask/$', views.shift_task, name='shiftTask'),
 ]
