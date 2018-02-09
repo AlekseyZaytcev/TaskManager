@@ -11,6 +11,8 @@
                        {% if task.status is True %} checked {% endif %}>
                 <span class="border-right-0"
                       style="margin-left: 10px;border-left: 2px dotted black;"></span>
+                      <span
+                            class="glyphicon glyphicon-sort" aria-hidden="true" style="color: gray; margin-left: 1%;"></span>
                 <label class="border-right-0 task_name" for="{{task.id}}Checkbox" id="Task{{task.id}}Text"
                        {% if task.status is True %} style="color: green;text-decoration:line-through" {% endif %}>{{ task.task_name }}</label>
                 <div class="form-group task-btgroups updTask"
@@ -25,11 +27,6 @@
                 </div>
 
                 <div class="btn-group task-btgroups" role="group">
-                    <button type="button" class="btn btn-xs task-buttons"><span
-                            class="glyphicon glyphicon-sort"
-                            aria-hidden="true"
-                            style="color: gray;"></span>
-                    </button>
                     <button type="button" class="btn btn-xs task-buttons" id="Task{{task.id}}updater"
                             onclick="updateTask(this)"><span
                             class="glyphicon glyphicon-pencil"
