@@ -43,9 +43,13 @@ function deleteTask(obj) {
 function updateTask(obj) {
     var taskId = (obj.id).slice(0, -7);
     var textFieldId = taskId + 'Text';
+    var progressId = taskId + 'Progress';
     var updateFormId = taskId + 'updateForm';
+    var deadlineFormId = taskId + 'DeadlineForm';
     $('#' + textFieldId).toggle(250);
+    $('#' + progressId).toggle(250);
     $('#' + updateFormId).toggle(250);
+    $('#' + deadlineFormId).toggle(250);
 };
 
 function updateTaskSend(obj) {
@@ -60,7 +64,9 @@ function updateTaskSend(obj) {
             var name = $('#' + updateFormId + ' input[name="updatedTaskName"]').val();
             $('#' + updateFormId + ' input[name="updatedTaskName"]').val('');
             var textFieldId = '#' + obj.id.slice(0, -6) + 'Text';
+            var deadlineFormId = '#' + obj.id.slice(0, -6) + 'DeadlineForm';
             $(textFieldId).html(name);
+            $(deadlineFormId).toggle(250);
             $('#' + updateFormId).toggle(250);
             $(textFieldId).toggle(250);
         })
@@ -71,6 +77,29 @@ function updateTaskSend(obj) {
             console.log("complete");
         });
 };
+
+function updateDeadline(obj) {
+    var deadlineFormId = '#' + obj.id + 'Form';
+    var progressId = '#' + obj.id.slice(0, -8) + 'Progress';
+    var data = $(deadlineFormId + ' input').serialize();
+    console.log(progressId);
+    $.ajax({
+            url: '/setDeadline/',
+            type: 'POST',
+            data: data,
+        })
+        .done(function(data) {
+        	$(progressId).val(data);
+            alert('Deadline updated!');
+        })
+        .fail(function() {
+            console.log("error");
+        })
+        .always(function() {
+            console.log("complete");
+        });
+};
+
 function checkTask(obj) {
     var project_id = obj.value;
     var task_id = obj.id.slice(0, -8);

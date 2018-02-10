@@ -1,21 +1,32 @@
+from _datetime import timedelta
+import datetime
+
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-
-# Create your views here.
 from django.views.decorators.csrf import csrf_exempt
 
 from managePage.models import Project, Task
 
 
+# Create your views here.
 def home(request):
     context = {}
     if request.user.is_authenticated:
         current_user = request.user
         projects_list = Project.objects.all().filter(user_id=current_user)
         tasks_list = Task.objects.all()
+        for task in tasks_list:
+            timeForTask = task.deadline - task.createData
+            today = datetime.date.today()
+            timeSpend = today - task.createData
+            try:
+                percent = timeSpend * 100 / timeForTask
+            except Exception:
+                percent = 0
+            task.percent = percent
         context = {'projects_list': projects_list,
                    'tasks_list': tasks_list, }
     return render(request, 'managePage/home.html', context)
@@ -102,6 +113,15 @@ def get_task(request):
         project_id = request.GET['project_id']
         tasks_list = Task.objects.filter(project_id=project_id)
         projects_list = Project.objects.all().filter(user_id=current_user, id=request.GET['project_id'])
+        for task in tasks_list:
+            timeForTask = task.deadline - task.createData
+            today = datetime.date.today()
+            timeSpend = today - task.createData
+            try:
+                percent = timeSpend * 100 / timeForTask
+            except Exception:
+                percent = 0
+            task.percent = percent
         return render(request, 'managePage/getTask.html', {'tasks_list': tasks_list, 'projects_list': projects_list})
 
 
@@ -169,3 +189,19 @@ def shift_task(request):
         projects_list = Project.objects.all().filter(user_id=current_user, id=project_id)
         
         return render(request, 'managePage/getTask.html', {'tasks_list': tasks_list, 'projects_list': projects_list})
+    
+    
+def set_deadline(request):
+    if request.method == 'POST':
+        deadline = request.POST['deadline']
+        taskId = request.POST['id']
+        Task.objects.filter(id=taskId).update(deadline=deadline)
+        task = Task.objects.filter(id=taskId)
+        timeForTask = task[0].deadline - task[0].createData
+        today = datetime.date.today()
+        timeSpend = today - task[0].createData
+        try:
+            percent = timeSpend * 100 / timeForTask
+        except Exception:
+            percent = 0
+        return HttpResponse(percent)

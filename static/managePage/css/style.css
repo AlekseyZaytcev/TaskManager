@@ -69,7 +69,7 @@ body {
 }
 .task-btgroups {
 position: absolute;
-    left: 88%;
+    left: 92%;
 }
 
 #projectAddModalWindow{margin: 20% auto;}
@@ -87,7 +87,44 @@ position: absolute;
 
 .updTask {
     margin-top: -3%;
-    margin-left: -81%;
-    width:84%;
+    margin-left: -72%;
+    width: 74%;
 }
 .task_name {margin-left: 10px; color: #c6462a}
+.deadline {
+	margin-top: -3%;
+    margin-left: -91%;
+}
+
+progress[value] {
+	margin-left: -111%;
+	margin-bottom: -3%;
+	width: 640px;
+	height: 8px;
+	
+	background-color: #eee;
+  	
+}
+progress[value]::-moz-progress-bar { 
+  background-image:
+    -moz-linear-gradient(
+      135deg, 
+      transparent 33%, 
+      rgba(0, 0, 0, 0.1) 33%, 
+      rgba(0, 0, 0, 0.1) 66%, 
+      transparent 66% 
+    ),
+    -moz-linear-gradient(
+      top, 
+      rgba(255, 255, 255, 0.25), 
+      rgba(0, 0, 0, 0.25)
+    ),
+    -moz-linear-gradient(
+      left, 
+      #09c, 
+      #f44
+    );
+  border-radius: 2px; 
+  background-size: 35px 20px, 100% 100%, 100% 100%; 
+}
+

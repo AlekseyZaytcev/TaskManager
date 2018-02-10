@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^getTask/$', views.get_task, name='getTask'),
     url(r'^checkTask/$', views.check_task, name='checkTask'),
     url(r'^shiftTask/$', views.shift_task, name='shiftTask'),
+    url(r'^setDeadline/$', views.set_deadline, name='setDeadline'),
 ]
