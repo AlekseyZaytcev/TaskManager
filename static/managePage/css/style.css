@@ -97,9 +97,9 @@ position: absolute;
 }
 
 progress[value] {
-	margin-left: -111%;
-	margin-bottom: -3%;
-	width: 640px;
+	margin-left: -1109%;
+	margin-bottom: -25%;
+	width: 1000%;
 	height: 8px;
 	
 	background-color: #eee;
