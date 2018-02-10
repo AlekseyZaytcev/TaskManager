@@ -179,14 +179,29 @@ def shift_task(request):
         
         nameStart = task_startDrag[0].task_name
         statusStart = task_startDrag[0].status
+        createDataStart = task_startDrag[0].createData
+        deadlineStart = task_startDrag[0].deadline
+        
         nameFinish = task_finishDrag[0].task_name
         statusFinish = task_finishDrag[0].status
+        createDataFinish = task_finishDrag[0].createData
+        deadlineFinish = task_finishDrag[0].deadline
         
-        Task.objects.filter(id=idStartdrag).update(task_name=nameFinish, status=statusFinish)
-        Task.objects.filter(id=idFinishdrag).update(task_name=nameStart, status=statusStart)
+        Task.objects.filter(id=idStartdrag).update(task_name=nameFinish, status=statusFinish, deadline=deadlineFinish, createData=createDataFinish)
+        Task.objects.filter(id=idFinishdrag).update(task_name=nameStart, status=statusStart, deadline=deadlineStart, createData=createDataStart)
         
         tasks_list = Task.objects.filter(project_id=project_id)
         projects_list = Project.objects.all().filter(user_id=current_user, id=project_id)
+        
+        for task in tasks_list:
+            timeForTask = task.deadline - task.createData
+            today = datetime.date.today()
+            timeSpend = today - task.createData
+            try:
+                percent = timeSpend * 100 / timeForTask
+            except Exception:
+                percent = 0
+            task.percent = percent
         
         return render(request, 'managePage/getTask.html', {'tasks_list': tasks_list, 'projects_list': projects_list})
     
