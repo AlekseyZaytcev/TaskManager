@@ -1,5 +1,4 @@
-$("#createProject").click( function(e) {
-    e.preventDefault();
+function createProject(){
     var data = $('#newProject input').serialize();
     $.ajax({
             url: '/createProject/',
@@ -13,12 +12,14 @@ $("#createProject").click( function(e) {
             });
         })
         .fail(function() {
-            console.log("error");
+            console.log("error while create project");
+            $('#sameProjectNameAlert').show(200);
+            setTimeout(function() { $('#sameProjectNameAlert').hide(200); }, 3000);
         })
         .always(function() {
             console.log("complete");
         });
-});
+};
 
 function deleteProject(obj) {
     var projectId = obj.id.slice(0, -9).slice(7);
@@ -38,7 +39,7 @@ function deleteProject(obj) {
             $('#br' + projectId).remove();
         })
         .fail(function() {
-            console.log("error");
+            console.log("error while delete project");
         })
         .always(function() {
             console.log("complete");
@@ -71,9 +72,18 @@ function updateProjectSend(obj) {
             $(projectNameId).toggle(250);
         })
         .fail(function() {
-            console.log("error");
+            console.log("error while update project");
         })
         .always(function() {
             console.log("complete");
         });
 };
+
+$("#createProject").click( function(e) {
+    e.preventDefault();
+    createProject();
+});
+$(document).on('submit','#newProject',function(e){
+    e.preventDefault();
+    createProject();
+});

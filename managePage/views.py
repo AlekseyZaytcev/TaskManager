@@ -1,10 +1,10 @@
-from _datetime import timedelta
 import datetime
 
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
+from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 
@@ -37,17 +37,23 @@ def create_user(request):
         username = request.POST['username']
         password = request.POST['password']
         email = request.POST['email']
-        user = User.objects.create_user(username=username, email=email, password=password)
-        user.save()
-        if user is not None:
+        
+        if User.objects.filter(username=username).exists():
+            response_data = {'text': 'This username are used!'}
+            return JsonResponse(response_data, status=404)
+        
+        elif User.objects.filter(email=email).exists():
+            response_data = {'text': 'This email are used!'}
+            return JsonResponse(response_data, status=404)
+        
+        else:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.save()
+        
             login(request, user)
             # Redirect to a success page with ajax function.
-            return HttpResponse('200')
-        else:
-            # Return an 'invalid login' error message.
-            print('Invalid login details: login-%s, password-%s' %
-                  (username, password))
-            return HttpResponse('404')
+            return HttpResponse(status=200)
+
 
 
 def user_login(request):
@@ -58,12 +64,12 @@ def user_login(request):
         if user is not None:
             login(request, user)
             # Redirect to a success page with ajax function.
-            return HttpResponse('200')
+            return HttpResponse(status=200)
         else:
             # Return an 'invalid login' error message.
             print('Invalid login details: login-%s, password-%s' %
                   (username, password))
-            return HttpResponse('404')
+            return HttpResponse(status=404)
 
 
 @login_required
@@ -82,13 +88,14 @@ def get_project(request):
 
 def create_project(request):
     if request.method == 'POST':
-        user_id = request.user
+        current_user = request.user
         project_name = request.POST['projectName']
-        Project.objects.create(
-            user_id=user_id,
-            project_name=project_name
-        )
-        return HttpResponse('200')
+        if Project.objects.filter(user_id=current_user, project_name=project_name).exists():
+            return HttpResponse(status=404)
+        else:
+            Project.objects.create(user_id=current_user,
+                                   project_name=project_name)
+            return HttpResponse(status=200)
 
 
 def delete_project(request):
@@ -96,15 +103,20 @@ def delete_project(request):
         project_id = request.POST.get('projectId')
         project = Project.objects.get(id=project_id)
         project.delete()
-        return HttpResponse('200')
+        return HttpResponse(status=200)
 
 
 def update_project(request):
     if request.method == 'POST':
+        current_user = request.user
         projectName = request.POST['updatedProjectName']
         projectId = request.POST['id']
-        Project.objects.filter(id=projectId).update(project_name=projectName)
-        return HttpResponse('200')
+        Project.objects.filter(user_id=current_user, id=projectId).update(project_name=projectName)
+        
+        if Project.objects.filter(user_id=current_user, project_name=projectName).exists():
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=404)
 
 
 def get_task(request):
@@ -130,19 +142,22 @@ def create_task(request):
         task_name = request.POST['task_name']
         project_id = request.POST['project_id']
         project = Project.objects.get(id=project_id)
-        Task.objects.create(
+        
+        if Task.objects.filter(project_id=project_id, task_name=task_name).exists():
+            return HttpResponse(status=404)
+        else:
+            Task.objects.create(
             task_name=task_name,
-            project_id=project
-        )
-        return HttpResponse('200')
-
-
+            project_id=project)
+            return HttpResponse(status=200)
+            
+        
 def delete_task(request):
     if request.method == 'POST':
         task_id = request.POST['taskId']
         task = Task.objects.get(id=task_id)
         task.delete()
-        return HttpResponse('200')
+        return HttpResponse(status=200)
 
 
 def update_task(request):
@@ -150,7 +165,11 @@ def update_task(request):
         taskName = request.POST['updatedTaskName']
         taskId = request.POST['id']
         Task.objects.filter(id=taskId).update(task_name=taskName)
-        return HttpResponse('200')
+        
+        if Task.objects.filter(id=taskId, task_name=taskName).exists():
+            return HttpResponse(status=200)
+        else:
+            return HttpResponse(status=404)
 
 
 @csrf_exempt
@@ -162,49 +181,43 @@ def check_task(request):
             task.update(status=True)
         else:
             task.update(status=False)
-        return HttpResponse('200')
+        return HttpResponse(status=404)
     
     
-@csrf_exempt
 def shift_task(request):
 
     if request.method == 'POST':
-        current_user = request.user
         project_id = request.POST['project_id']
         idStartdrag = request.POST['idStartdrag']
         idFinishdrag = request.POST['idFinishdrag']
         
+        # Retrieve from database dragged task and and task where need drop this task
         task_startDrag = Task.objects.filter(project_id=project_id, id=idStartdrag)
         task_finishDrag = Task.objects.filter(project_id=project_id, id=idFinishdrag)
         
+        # Put status and name in to variables (dragged task)
         nameStart = task_startDrag[0].task_name
         statusStart = task_startDrag[0].status
         createDataStart = task_startDrag[0].createData
         deadlineStart = task_startDrag[0].deadline
         
+        # Put status and name in to variables (place where drop task)
         nameFinish = task_finishDrag[0].task_name
         statusFinish = task_finishDrag[0].status
         createDataFinish = task_finishDrag[0].createData
         deadlineFinish = task_finishDrag[0].deadline
         
-        Task.objects.filter(id=idStartdrag).update(task_name=nameFinish, status=statusFinish, deadline=deadlineFinish, createData=createDataFinish)
-        Task.objects.filter(id=idFinishdrag).update(task_name=nameStart, status=statusStart, deadline=deadlineStart, createData=createDataStart)
         
-        tasks_list = Task.objects.filter(project_id=project_id)
-        projects_list = Project.objects.all().filter(user_id=current_user, id=project_id)
-        
-        for task in tasks_list:
-            timeForTask = task.deadline - task.createData
-            today = datetime.date.today()
-            timeSpend = today - task.createData
-            try:
-                percent = timeSpend * 100 / timeForTask
-            except Exception:
-                percent = 0
-            task.percent = percent
-        
-        return render(request, 'managePage/getTask.html', {'tasks_list': tasks_list, 'projects_list': projects_list})
-    
+        # Change name and status between task's
+        try:
+            Task.objects.filter(id=idStartdrag).update(task_name=nameFinish, status=statusFinish, deadline=deadlineFinish, createData=createDataFinish)
+            Task.objects.filter(id=idFinishdrag).update(task_name=nameStart, status=statusStart, deadline=deadlineStart, createData=createDataStart)
+            
+            # Render template and inject div with this task in DOM using ajax
+            return HttpResponse(status=200)
+        except Exception as e:
+            print(e)
+            return HttpResponse(status=404)
     
 def set_deadline(request):
     if request.method == 'POST':
@@ -219,4 +232,4 @@ def set_deadline(request):
             percent = timeSpend * 100 / timeForTask
         except Exception:
             percent = 0
-        return HttpResponse(percent)
+        return HttpResponse(percent, status=200)

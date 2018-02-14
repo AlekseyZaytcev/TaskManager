@@ -1,3 +1,40 @@
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+};
+
+function login(){
+    var data = $('#login-form input').serialize();
+    $.ajax({
+            url: '/login/',
+            type: 'POST',
+            data: data,
+        })
+        .done(function() {
+            location.reload();
+        })
+        .fail(function(response) {
+            console.log("error");
+            $("#login").click(); // close login popover.
+            $("#warningAlertText").html('<strong>Warning!</strong> Invalid username or password!');
+            $('#warningAlert').show(200);
+        })
+        .always(function() {
+            console.log("complete");
+        });
+};
+
 $("#login").popover({
     title: '<h4>Login in TaskManager</h4>',
     container: 'body',
@@ -10,22 +47,7 @@ $("#login").popover({
 
 $(document).on('submit', '#login-form', function(e) {
     e.preventDefault();
-    var data = $('#login-form input').serialize();
-    $.ajax({
-            url: '/login/',
-            type: 'POST',
-            data: data,
-        })
-        .done(function() {
-            location.reload();
-        })
-        .fail(function() {
-            console.log("error");
-        })
-        .always(function() {
-            console.log("complete");
-        });
-
+    login();
 });
 
 $(document).on('submit', '#createUser', function(e) {
@@ -39,8 +61,11 @@ $(document).on('submit', '#createUser', function(e) {
         .done(function() {
             location.reload();
         })
-        .fail(function() {
+        .fail(function(response) {
             console.log("error");
+            var text = response.responseJSON.text;
+            $("#warningAlertText").html('<strong>Warning!</strong> ' + text);
+            $('#warningAlert').show(200);
         })
         .always(function() {
             console.log("complete");

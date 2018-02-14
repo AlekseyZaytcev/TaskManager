@@ -11,7 +11,11 @@ function createTask(obj) {
             $(listId).load('/getTask/ ' + listId, data);
         })
         .fail(function() {
-            console.log("error");
+            console.log("error while create task");
+            $("#warningAlertText").html('<strong>Get yourself together!</strong> Don\'t duplicate task name!');
+            $('#warningAlert').show(200);
+            setTimeout(function() { $('#warningAlert').hide(200); }, 3000);
+            
         })
         .always(function() {
             console.log("complete");
@@ -33,7 +37,7 @@ function deleteTask(obj) {
             $('#Task' + task_id + 'Task').remove();
         })
         .fail(function() {
-            console.log("error");
+            console.log("error while delete task");
         })
         .always(function() {
             console.log("complete");
@@ -65,13 +69,15 @@ function updateTaskSend(obj) {
             $('#' + updateFormId + ' input[name="updatedTaskName"]').val('');
             var textFieldId = '#' + obj.id.slice(0, -6) + 'Text';
             var deadlineFormId = '#' + obj.id.slice(0, -6) + 'DeadlineForm';
+            var progressId = '#' + obj.id.slice(0, -6) + 'Progress';
             $(textFieldId).html(name);
             $(deadlineFormId).toggle(250);
             $('#' + updateFormId).toggle(250);
+            $(progressId).toggle(250);
             $(textFieldId).toggle(250);
         })
         .fail(function() {
-            console.log("error");
+            console.log("error while update task name");
         })
         .always(function() {
             console.log("complete");
@@ -82,7 +88,6 @@ function updateDeadline(obj) {
     var deadlineFormId = '#' + obj.id + 'Form';
     var progressId = '#' + obj.id.slice(0, -8) + 'Progress';
     var data = $(deadlineFormId + ' input').serialize();
-    console.log(progressId);
     $.ajax({
             url: '/setDeadline/',
             type: 'POST',
@@ -90,10 +95,11 @@ function updateDeadline(obj) {
         })
         .done(function(data) {
         	$(progressId).val(data);
-            alert('Deadline updated!');
+            $('#deadlineUpdatedAlert').show(200);
+            setTimeout(function() { $('#deadlineUpdatedAlert').hide(200); }, 3000);
         })
         .fail(function() {
-            console.log("error");
+            console.log("error while update deadline");
         })
         .always(function() {
             console.log("complete");
@@ -117,7 +123,9 @@ function checkTask(obj) {
             $(updateDivId).load('/getTask/ ' + updateDivId, data);
         })
         .fail(function() {
-            console.log("error");
+            console.log("error while check task");
+            $("#dangerAlertText").html('<strong>Warning!</strong> Can\'t change task status!');
+            $('#dangerAlert').show(200);
         })
         .always(function() {
             console.log("complete");
@@ -140,13 +148,33 @@ function onDrop(event) {
 	  var idFinishdrag = event.target.id.slice(0, -4).slice(4);
 	  var project_id = event.target.value;
 	  var updateDivId = '#Task' + project_id + 'List';
+	  var csrftoken = getCookie('csrftoken');
+	  var myData = new FormData();
+	  myData.append('project_id', project_id);
+	  myData.append('csrfmiddlewaretoken', csrftoken);
 	  
 	  var data = {
 			  project_id: project_id,
 			  idStartdrag: idStartdrag,
 			  idFinishdrag: idFinishdrag,
+			  csrfmiddlewaretoken: csrftoken,
 	  };
 	  
-	  $(updateDivId).load('/shiftTask/ ' + updateDivId, data);
+	  $.ajax({
+            url: '/shiftTask/',
+            type: 'POST',
+            data: data,
+        })
+        .done(function() {
+            $(updateDivId).load('/getTask/ ' + updateDivId, myData);
+        })
+        .fail(function() {
+            console.log("error while check task");
+            $("#dangerAlertText").html('<strong>Warning!</strong> Can\'t change task position!');
+            $('#dangerAlert').show(200);
+        })
+        .always(function() {
+            console.log("complete");
+        });
 	  event.preventDefault();
 	};
