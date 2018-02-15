@@ -149,9 +149,6 @@ function onDrop(event) {
 	  var project_id = event.target.value;
 	  var updateDivId = '#Task' + project_id + 'List';
 	  var csrftoken = getCookie('csrftoken');
-	  var myData = new FormData();
-	  myData.append('project_id', project_id);
-	  myData.append('csrfmiddlewaretoken', csrftoken);
 	  
 	  var data = {
 			  project_id: project_id,
@@ -166,7 +163,9 @@ function onDrop(event) {
             data: data,
         })
         .done(function() {
-            $(updateDivId).load('/getTask/ ' + updateDivId, myData);
+        	var serializedData = $.param(data) // This is a way to serialize data in some variable
+        	console.log(serializedData)		   // becouse this string ↓ send POST request instead GET if i pass data in object
+            $(updateDivId).load('/getTask/ ' + updateDivId, serializedData);  // but i need GET for /getTask/ view
         })
         .fail(function() {
             console.log("error while check task");

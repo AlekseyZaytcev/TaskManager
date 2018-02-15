@@ -24,7 +24,7 @@ def home(request):
             timeSpend = today - task.createData
             try:
                 percent = timeSpend * 100 / timeForTask
-            except Exception:
+            except:
                 percent = 0
             task.percent = percent
         context = {'projects_list': projects_list,
@@ -120,6 +120,7 @@ def update_project(request):
 
 
 def get_task(request):
+    print(request.method)
     if request.method == 'GET':
         current_user = request.user
         project_id = request.GET['project_id']
@@ -131,7 +132,7 @@ def get_task(request):
             timeSpend = today - task.createData
             try:
                 percent = timeSpend * 100 / timeForTask
-            except Exception:
+            except:
                 percent = 0
             task.percent = percent
         return render(request, 'managePage/getTask.html', {'tasks_list': tasks_list, 'projects_list': projects_list})
@@ -175,14 +176,18 @@ def update_task(request):
 @csrf_exempt
 def check_task(request):
     if request.method == 'POST':
-        taskId = request.POST['id']
-        task = Task.objects.filter(id=taskId)
-        if task[0].status == False:
-            task.update(status=True)
-        else:
-            task.update(status=False)
-        return HttpResponse(status=404)
-    
+        try:
+            taskId = request.POST['id']
+            task = Task.objects.filter(id=taskId)
+            if task[0].status == False:
+                task.update(status=True)
+            else:
+                task.update(status=False)
+            return HttpResponse(status=200)
+        except Exception as e:
+            print(e)
+            return HttpResponse(status=404)
+            
     
 def shift_task(request):
 
@@ -230,6 +235,6 @@ def set_deadline(request):
         timeSpend = today - task[0].createData
         try:
             percent = timeSpend * 100 / timeForTask
-        except Exception:
+        except:
             percent = 0
         return HttpResponse(percent, status=200)
