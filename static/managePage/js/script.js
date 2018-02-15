@@ -27,8 +27,8 @@ function login(){
         .fail(function(response) {
             console.log("error");
             $("#login").click(); // close login popover.
-            $("#warningAlertText").html('<strong>Warning!</strong> Invalid username or password!');
-            $('#warningAlert').show(200);
+            $("#dangerAlertText").html('<strong>Warning!</strong> Invalid username or password!');
+            $('#dangerAlert').show(200);
         })
         .always(function() {
             console.log("complete");
