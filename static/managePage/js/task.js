@@ -109,18 +109,22 @@ function updateDeadline(obj) {
 function checkTask(obj) {
     var project_id = obj.value;
     var task_id = obj.id.slice(0, -8);
-    var createTaskFormId = '#Task' + project_id + 'CreateForm';
     var updateDivId = '#Task' + project_id + 'List';
-    var data = $(createTaskFormId + ' input').serialize();
+    var csrftoken = getCookie('csrftoken');
+    var data = {
+    		'project_id': project_id,
+    		'task_id': task_id,
+    		'csrfmiddlewaretoken': csrftoken,
+    };
+    var serializedData = $.param(data)
+    
     $.ajax({
             url: '/checkTask/',
             type: 'POST',
-            data: {
-                'id': task_id,
-            },
+            data: serializedData,
         })
         .done(function() {
-            $(updateDivId).load('/getTask/ ' + updateDivId, data);
+            $(updateDivId).load('/getTask/ ' + updateDivId, serializedData);
         })
         .fail(function() {
             console.log("error while check task");
@@ -151,10 +155,10 @@ function onDrop(event) {
 	  var csrftoken = getCookie('csrftoken');
 	  
 	  var data = {
-			  project_id: project_id,
-			  idStartdrag: idStartdrag,
-			  idFinishdrag: idFinishdrag,
-			  csrfmiddlewaretoken: csrftoken,
+			  'project_id': project_id,
+			  'idStartdrag': idStartdrag,
+			  'idFinishdrag': idFinishdrag,
+			  'csrfmiddlewaretoken': csrftoken,
 	  };
 	  
 	  $.ajax({
@@ -163,8 +167,8 @@ function onDrop(event) {
             data: data,
         })
         .done(function() {
-        	var serializedData = $.param(data) // This is a way to serialize data in some variable
-        	console.log(serializedData)		   // becouse this string ↓ send POST request instead GET if i pass data in object
+        	var serializedData = $.param(data); // This is a way to serialize data in some variable
+        	// becouse this string ↓ send POST request instead GET if i pass data in object
             $(updateDivId).load('/getTask/ ' + updateDivId, serializedData);  // but i need GET for /getTask/ view
         })
         .fail(function() {

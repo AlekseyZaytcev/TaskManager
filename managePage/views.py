@@ -120,7 +120,6 @@ def update_project(request):
 
 
 def get_task(request):
-    print(request.method)
     if request.method == 'GET':
         current_user = request.user
         project_id = request.GET['project_id']
@@ -173,11 +172,10 @@ def update_task(request):
             return HttpResponse(status=404)
 
 
-@csrf_exempt
 def check_task(request):
     if request.method == 'POST':
         try:
-            taskId = request.POST['id']
+            taskId = request.POST['task_id']
             task = Task.objects.filter(id=taskId)
             if task[0].status == False:
                 task.update(status=True)
