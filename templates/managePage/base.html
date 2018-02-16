@@ -69,8 +69,9 @@
     <div id="infoAlertText"></div>
 </div>
 
-<div id="deadlineUpdatedAlert" class="alert alert-success" role="alert" hidden>
-    <strong>Yyeep!</strong> Deadline for your task updated!
+<div id="successAlert" class="alert alert-success" role="alert" hidden>
+    <button type="button" class="close" onclick="{$('#successAlert').hide(200);}" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <div id="successAlertText"></div>
 </div>
 
 {% if user.is_authenticated %}

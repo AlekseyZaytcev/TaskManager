@@ -250,6 +250,9 @@ def shift_task(request):
 def set_deadline(request):
     if request.method == 'POST':
         deadline = request.POST['deadline']
+        if not deadline:
+            response_data = {'text': '<strong>Please,</strong> pick deadline day from calendar!'}
+            return JsonResponse(response_data, status=404)
         taskId = request.POST['id']
         Task.objects.filter(id=taskId).update(deadline=deadline)
         task = Task.objects.filter(id=taskId)
@@ -260,4 +263,5 @@ def set_deadline(request):
             percent = timeSpend * 100 / timeForTask
         except:
             percent = 0
-        return HttpResponse(percent, status=200)
+        response_data = {'text': '<strong>Yyeep!</strong> Deadline for your task updated!', 'percent': percent}
+        return JsonResponse(response_data, status=200)

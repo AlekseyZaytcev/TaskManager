@@ -98,13 +98,21 @@ function updateDeadline(obj) {
             type: 'POST',
             data: data,
         })
-        .done(function(data) {
-        	$(progressId).val(data);
-            $('#deadlineUpdatedAlert').show(200);
-            setTimeout(function() { $('#deadlineUpdatedAlert').hide(200); }, 3000);
+        .done(function(response) {
+        	var percent = response['percent'];
+        	var text = response['text'];
+        	
+        	$(progressId).val(percent);
+            $("#successAlertText").html(text);
+            $('#successAlert').show(200);
+            setTimeout(function() { $('#successAlert').hide(200); }, 3000);
         })
-        .fail(function() {
+        .fail(function(response) {
             console.log("error while update deadline");
+            var text = response.responseJSON.text;
+            $("#warningAlertText").html(text);
+            $('#warningAlert').show(200);
+            setTimeout(function() { $('#warningAlert').hide(200); }, 3000);
         })
         .always(function() {
             console.log("complete");
