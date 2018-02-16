@@ -131,3 +131,7 @@ progress[value]::-moz-progress-bar {
 	width: 70%;
 	margin-left: 16%;
 }
+.projectUpdateForm {
+	margin-top:2.2%;
+	width:82%;
+}

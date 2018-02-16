@@ -11,10 +11,12 @@ function createProject(){
                 $('#overflow').append(result);
             });
         })
-        .fail(function() {
+        .fail(function(response) {
             console.log("error while create project");
-            $('#sameProjectNameAlert').show(200);
-            setTimeout(function() { $('#sameProjectNameAlert').hide(200); }, 3000);
+            var text = response.responseJSON.text;
+            $("#warningAlertText").html(text);
+            $('#warningAlert').show(200);
+            setTimeout(function() { $('#warningAlert').hide(200); }, 3000);
         })
         .always(function() {
             console.log("complete");
@@ -71,8 +73,12 @@ function updateProjectSend(obj) {
             $('#' + updateFormId).toggle(250);
             $(projectNameId).toggle(250);
         })
-        .fail(function() {
+        .fail(function(response) {
             console.log("error while update project");
+            var text = response.responseJSON.text;
+            $("#warningAlertText").html(text);
+            $('#warningAlert').show(200);
+            setTimeout(function() { $('#warningAlert').hide(200); }, 3000);
         })
         .always(function() {
             console.log("complete");

@@ -90,8 +90,12 @@ def create_project(request):
     if request.method == 'POST':
         current_user = request.user
         project_name = request.POST['projectName']
+        if not project_name:
+            response_data = {'text': '<strong>Alert!</strong> Don\'t use empty project name!'}
+            return JsonResponse(response_data, status=404)
         if Project.objects.filter(user_id=current_user, project_name=project_name).exists():
-            return HttpResponse(status=404)
+            response_data = {'text': '<strong>Alert!</strong> Project with same name exist!'}
+            return JsonResponse(response_data, status=404)
         else:
             Project.objects.create(user_id=current_user,
                                    project_name=project_name)
@@ -110,13 +114,26 @@ def update_project(request):
     if request.method == 'POST':
         current_user = request.user
         projectName = request.POST['updatedProjectName']
+        
+        # If name is empty:
+        if not projectName:
+            response_data = {'text': '<strong>Alert!</strong> You are using empty project name while edit it!'}
+            return JsonResponse(response_data, status=404)
+        
+        # If project with same name exist:
+        if Project.objects.filter(user_id=current_user, project_name=projectName).exists():
+            response_data = {'text': '<strong>Alert!</strong> Project with same name exist!'}
+            return JsonResponse(response_data, status=404)
+        
         projectId = request.POST['id']
         Project.objects.filter(user_id=current_user, id=projectId).update(project_name=projectName)
         
+        # If project created it's OK:
         if Project.objects.filter(user_id=current_user, project_name=projectName).exists():
             return HttpResponse(status=200)
         else:
-            return HttpResponse(status=404)
+            response_data = {'text': 'Project name not updated!'}
+            return JsonResponse(response_data, status=404)
 
 
 def get_task(request):
