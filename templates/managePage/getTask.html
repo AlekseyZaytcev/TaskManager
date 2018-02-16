@@ -48,8 +48,10 @@
                             aria-hidden="true"
                             style="color: gray;"></span>
                     </button>
-                    <progress id="Task{{task.id}}Progress" value="{{task.percent}}" max="100"></progress> 
-                </div>
+                    	<h6 class="createDate" id="Task{{task.id}}createDate">{{task.createData}}</h6>
+                        <progress id="Task{{task.id}}Progress" value="{{task.percent}}" max="100"></progress>
+                        <h6 class="deadlineDate" id="Task{{task.id}}deadlineDate">{{task.deadline}}</h6>
+                    </div>
             </div>
         </div>
     </li>

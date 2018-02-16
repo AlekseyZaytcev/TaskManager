@@ -51,10 +51,14 @@ function updateTask(obj) {
     var progressId = taskId + 'Progress';
     var updateFormId = taskId + 'updateForm';
     var deadlineFormId = taskId + 'DeadlineForm';
+    var createDateId = taskId + 'createDate';
+    var deadlineDateId = taskId + 'deadlineDate';
     $('#' + textFieldId).toggle(250);
     $('#' + progressId).toggle(250);
     $('#' + updateFormId).toggle(250);
     $('#' + deadlineFormId).toggle(250);
+    $('#' + createDateId).toggle(250);
+    $('#' + deadlineDateId).toggle(250);
 };
 
 function updateTaskSend(obj) {
@@ -71,11 +75,15 @@ function updateTaskSend(obj) {
             var textFieldId = '#' + obj.id.slice(0, -6) + 'Text';
             var deadlineFormId = '#' + obj.id.slice(0, -6) + 'DeadlineForm';
             var progressId = '#' + obj.id.slice(0, -6) + 'Progress';
+            var createDateId = '#' + obj.id.slice(0, -6) + 'createDate';
+            var deadlineDateId = '#' + obj.id.slice(0, -6) + 'deadlineDate';
             $(textFieldId).html(name);
             $(deadlineFormId).toggle(250);
             $('#' + updateFormId).toggle(250);
             $(progressId).toggle(250);
             $(textFieldId).toggle(250);
+            $(createDateId).toggle(250);
+            $(deadlineDateId).toggle(250);
         })
         .fail(function(response) {
             console.log("error while update task name");

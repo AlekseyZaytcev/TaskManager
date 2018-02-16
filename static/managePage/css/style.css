@@ -97,9 +97,9 @@ position: absolute;
 }
 
 progress[value] {
-	margin-left: -1109%;
-	margin-bottom: -30%;
-	width: 1000%;
+	margin-left: -1004%;
+	margin-bottom: -31%;
+	width: 819%;
 	height: 8px;
 	
 	background-color: #eee;
@@ -134,4 +134,15 @@ progress[value]::-moz-progress-bar {
 .projectUpdateForm {
 	margin-top:2.2%;
 	width:82%;
+}
+.createDate {
+	margin-left: -1015%;
+	margin-bottom: -55%;
+	margin-top: 43%;
+	font-size: 8px;
+}
+.deadlineDate {
+	margin-left: -96%;
+	margin-top: 9%;
+	font-size: 8px;
 }
