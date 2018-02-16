@@ -100,6 +100,7 @@ function updateTaskSend(obj) {
 function updateDeadline(obj) {
     var deadlineFormId = '#' + obj.id + 'Form';
     var progressId = '#' + obj.id.slice(0, -8) + 'Progress';
+    var deadlineDateId = '#' + obj.id.slice(0, -8) + 'deadlineDate';
     var data = $(deadlineFormId + ' input').serialize();
     $.ajax({
             url: '/setDeadline/',
@@ -109,9 +110,12 @@ function updateDeadline(obj) {
         .done(function(response) {
         	var percent = response['percent'];
         	var text = response['text'];
+        	var deadline = response['deadline'];
         	
         	$(progressId).val(percent);
+        	
             $("#successAlertText").html(text);
+            $(deadlineDateId).html(deadline);
             $('#successAlert').show(200);
             setTimeout(function() { $('#successAlert').hide(200); }, 3000);
         })

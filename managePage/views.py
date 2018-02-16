@@ -267,5 +267,7 @@ def set_deadline(request):
             percent = timeSpend * 100 / timeForTask
         except:
             percent = 0
-        response_data = {'text': '<strong>Yyeep!</strong> Deadline for your task updated!', 'percent': percent}
+        deadline = task[0].deadline
+        response_data = {'text': '<strong>Yyeep!</strong> Deadline for your task updated!',
+                         'percent': percent, 'deadline': deadline}
         return JsonResponse(response_data, status=200)
