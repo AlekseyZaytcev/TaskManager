@@ -82,7 +82,7 @@
                         <div class="form-group task-btgroups deadline" id="Task{{task.id}}DeadlineForm" hidden>
                         	{% csrf_token %}
                         	<input type="date" name="deadline">
-                        	<input type="hidden" name="id" value="{{task.id}}">
+                        	<input type="hidden" name="task_id" value="{{task.id}}">
                         	<input type="hidden" name="project_id" value="{{project.id}}">
                         	<button class="btn btn-xs btn-default newTaskButton" id="Task{{task.id}}Deadline"
                                     onclick="updateDeadline(this)" type="button">Set
@@ -93,7 +93,8 @@
                             {% csrf_token %}
                             <input type="text" placeholder="Change your task" name="updatedTaskName"
                                    style="width:85%">
-                            <input type="hidden" name="id" value="{{task.id}}">
+                            <input type="hidden" name="task_id" value="{{task.id}}">
+                            <input type="hidden" name="project_id" value="{{project.id}}">
                             <button class="btn btn-xs btn-default newTaskButton" id="Task{{task.id}}update"
                                     onclick="updateTaskSend(this)" type="button">Change
                             </button>

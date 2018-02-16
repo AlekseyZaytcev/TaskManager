@@ -184,14 +184,18 @@ def delete_task(request):
 def update_task(request):
     if request.method == 'POST':
         taskName = request.POST['updatedTaskName']
-        taskId = request.POST['id']
+        task_id = request.POST['task_id']
+        project_id = request.POST['project_id']
         if not taskName:
             response_data = {'text': '<strong>Please,</strong> fill new task name!'}
             return JsonResponse(response_data, status=404)
+        if Task.objects.filter(project_id=project_id, task_name=taskName).exists():
+            response_data = {'text': '<strong>Exist</strong> task with this name!'}
+            return JsonResponse(response_data, status=404)
         
-        Task.objects.filter(id=taskId).update(task_name=taskName)
+        Task.objects.filter(id=task_id).update(task_name=taskName)
         
-        if Task.objects.filter(id=taskId, task_name=taskName).exists():
+        if Task.objects.filter(id=task_id, task_name=taskName).exists():
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=404)
@@ -253,7 +257,7 @@ def set_deadline(request):
         if not deadline:
             response_data = {'text': '<strong>Please,</strong> pick deadline day from calendar!'}
             return JsonResponse(response_data, status=404)
-        taskId = request.POST['id']
+        taskId = request.POST['task_id']
         Task.objects.filter(id=taskId).update(deadline=deadline)
         task = Task.objects.filter(id=taskId)
         timeForTask = task[0].deadline - task[0].createData
