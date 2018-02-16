@@ -10,9 +10,10 @@ function createTask(obj) {
         .done(function() {
             $(listId).load('/getTask/ ' + listId, data);
         })
-        .fail(function() {
+        .fail(function(response) {
             console.log("error while create task");
-            $("#warningAlertText").html('<strong>Get yourself together!</strong> Don\'t duplicate task name!');
+            var text = response.responseJSON.text;
+            $("#warningAlertText").html(text);
             $('#warningAlert').show(200);
             setTimeout(function() { $('#warningAlert').hide(200); }, 3000);
             
@@ -76,8 +77,12 @@ function updateTaskSend(obj) {
             $(progressId).toggle(250);
             $(textFieldId).toggle(250);
         })
-        .fail(function() {
+        .fail(function(response) {
             console.log("error while update task name");
+            var text = response.responseJSON.text;
+            $("#warningAlertText").html(text);
+            $('#warningAlert').show(200);
+            setTimeout(function() { $('#warningAlert').hide(200); }, 3000);
         })
         .always(function() {
             console.log("complete");

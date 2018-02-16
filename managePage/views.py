@@ -143,8 +143,12 @@ def create_task(request):
         project_id = request.POST['project_id']
         project = Project.objects.get(id=project_id)
         
+        if not task_name:
+            response_data = {'text': '<strong>Please,</strong> fill task name!'}
+            return JsonResponse(response_data, status=404)
         if Task.objects.filter(project_id=project_id, task_name=task_name).exists():
-            return HttpResponse(status=404)
+            response_data = {'text': '<strong>Get yourself together!</strong> Don\'t duplicate task name!'}
+            return JsonResponse(response_data, status=404)
         else:
             Task.objects.create(
             task_name=task_name,
@@ -164,6 +168,10 @@ def update_task(request):
     if request.method == 'POST':
         taskName = request.POST['updatedTaskName']
         taskId = request.POST['id']
+        if not taskName:
+            response_data = {'text': '<strong>Please,</strong> fill new task name!'}
+            return JsonResponse(response_data, status=404)
+        
         Task.objects.filter(id=taskId).update(task_name=taskName)
         
         if Task.objects.filter(id=taskId, task_name=taskName).exists():
