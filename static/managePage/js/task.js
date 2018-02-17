@@ -161,6 +161,23 @@ function checkTask(obj) {
         });
 };
 
+document.addEventListener("dragenter", function(event) {
+    if ( event.target.className == "list-group-item droptarget" ) {
+        event.target.style.border = "3px dashed #3073ad";
+        }
+});
+document.addEventListener("dragleave", function(event) {
+    if ( event.target.className == "list-group-item droptarget" ) {
+        event.target.style.border = "";
+    }
+});
+
+function dragenter(event) {
+    if ( event.target.className == "droptarget" ) {
+        event.target.style.border = "3px dotted red";
+        };
+};
+
 function startdrag(event) {
 	var idStartdrag = event.target.id.slice(0, -4).slice(4);
 	var dt = event.dataTransfer;
@@ -200,9 +217,10 @@ function onDrop(event) {
             console.log("error while check task");
             $("#dangerAlertText").html('<strong>Warning!</strong> Can\'t change task position!');
             $('#dangerAlert').show(200);
+            setTimeout(function() { $('#dangerAlert').hide(200); }, 3000);
         })
         .always(function() {
             console.log("complete");
         });
 	  event.preventDefault();
-	};
+};

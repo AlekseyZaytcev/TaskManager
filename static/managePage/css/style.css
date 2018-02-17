@@ -146,3 +146,6 @@ progress[value]::-moz-progress-bar {
 	margin-top: 9%;
 	font-size: 8px;
 }
+.droptarget {
+    border: 1px solid #aaaaaa;
+}

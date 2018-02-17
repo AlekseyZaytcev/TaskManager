@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.http.response import JsonResponse
 from django.shortcuts import render, redirect
-from django.views.decorators.csrf import csrf_exempt
 
 from managePage.models import Project, Task
 
@@ -164,7 +163,7 @@ def create_task(request):
             response_data = {'text': '<strong>Please,</strong> fill task name!'}
             return JsonResponse(response_data, status=404)
         if Task.objects.filter(project_id=project_id, task_name=task_name).exists():
-            response_data = {'text': '<strong>Get yourself together!</strong> Don\'t duplicate task name!'}
+            response_data = {'text': '<strong>Please!</strong> Don\'t duplicate task name!'}
             return JsonResponse(response_data, status=404)
         else:
             Task.objects.create(
@@ -227,7 +226,7 @@ def shift_task(request):
         task_startDrag = Task.objects.filter(project_id=project_id, id=idStartdrag)
         task_finishDrag = Task.objects.filter(project_id=project_id, id=idFinishdrag)
         
-        # Put status and name in to variables (dragged task)
+        # Put status and name into variables (dragged task)
         nameStart = task_startDrag[0].task_name
         statusStart = task_startDrag[0].status
         createDataStart = task_startDrag[0].createData
