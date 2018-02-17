@@ -78,7 +78,7 @@
                         <span class="border-right-0"
                               style="margin-left: 10px;border-left: 2px dotted black;"></span>
                               <span class="glyphicon glyphicon-sort" aria-hidden="true" style="color: gray; margin-left: 1%;"></span>
-                        <label class="border-right-0 task_name" for="{{task.id}}Checkbox" id="Task{{task.id}}Text" {% if task.status is True %} style="color: green;text-decoration:line-through" {% endif %}>{{ task.task_name }}</label>
+                        <label class="border-right-0 task_name" for="{{task.id}}Checkbox" id="Task{{task.id}}Text" {% if task.status is True %} style="color: #c1c1c1" {% endif %}>{{ task.task_name }}</label>
                         <div class="form-group task-btgroups deadline" id="Task{{task.id}}DeadlineForm" hidden>
                         	{% csrf_token %}
                         	<input type="date" name="deadline">
@@ -113,9 +113,11 @@
                                     aria-hidden="true"
                                     style="color: gray;"></span>
                             </button>
-                            <h6 class="createDate" id="Task{{task.id}}createDate">{{task.createData}}</h6>
-                            <progress id="Task{{task.id}}Progress" value="{{task.percent}}" max="100"></progress>
-                            <h6 class="deadlineDate" id="Task{{task.id}}deadlineDate">{{task.deadline}}</h6>         
+                            <div {% if task.status is True %} hidden {% endif %}>
+                                <h6 class="createDate" id="Task{{task.id}}createDate">{{task.createData}}</h6>
+                                <progress id="Task{{task.id}}Progress" value="{{task.percent}}" max="100"></progress>
+                                <h6 class="deadlineDate" id="Task{{task.id}}deadlineDate">{{task.deadline}}</h6> 
+                            </div>        
                         </div>
                     </div>
                 </div>

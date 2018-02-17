@@ -16,7 +16,7 @@ def home(request):
     if request.user.is_authenticated:
         current_user = request.user
         projects_list = Project.objects.all().filter(user_id=current_user)
-        tasks_list = Task.objects.all()
+        tasks_list = Task.objects.all().extra(order_by=['status'])
         for task in tasks_list:
             timeForTask = task.deadline - task.createData
             today = datetime.date.today()
@@ -139,7 +139,7 @@ def get_task(request):
     if request.method == 'GET':
         current_user = request.user
         project_id = request.GET['project_id']
-        tasks_list = Task.objects.filter(project_id=project_id)
+        tasks_list = Task.objects.filter(project_id=project_id).extra(order_by=['status'])
         projects_list = Project.objects.all().filter(user_id=current_user, id=request.GET['project_id'])
         for task in tasks_list:
             timeForTask = task.deadline - task.createData
