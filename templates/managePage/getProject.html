@@ -16,7 +16,7 @@
                          id="Project{{project.id}}UpdateForm" hidden>
                         {% csrf_token %}
                         <input type="text" placeholder="Change your project" name="updatedProjectName"
-                               style="width:85%">
+                               style="width:85%" onkeypress="return disableEnter(event)">
                         <input type="hidden" name="id" value="{{project.id}}">
                         <button class="btn btn-sm btn-default newTaskButton" id="Project{{project.id}}Update"
                                 onclick="updateProjectSend(this)" type="button">Change

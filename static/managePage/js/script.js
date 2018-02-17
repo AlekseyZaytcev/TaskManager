@@ -71,3 +71,7 @@ $(document).on('submit', '#createUser', function(e) {
             console.log("complete");
         });
 });
+
+function disableEnter(e) {
+    if (e.keyCode == 13) {return false;}    
+};
