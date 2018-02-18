@@ -149,3 +149,6 @@ progress[value]::-moz-progress-bar {
 .droptarget {
     border: 1px solid #aaaaaa;
 }
+.pencil {
+    border: 2px solid #999;
+}

@@ -56,7 +56,7 @@
             <form id="Task{{project.id}}CreateForm" method="post">{% csrf_token %}
                 <div class="form-group" style="margin-top: 1px; margin-bottom: 1px;">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true" style="color: gray;"></span>
-                    <input type="text" id="newTaskInput" name="task_name" form="Task{{project.id}}CreateForm" required>
+                    <input type="text" id="newTaskInput" name="task_name" form="Task{{project.id}}CreateForm" required onkeypress="return disableEnter(event)">
                     <input type="hidden" form="Task{{project.id}}CreateForm" name="project_id" value="{{project.id}}">
                     <button type="button" class="btn btn-xs btn-default newTaskButton" id="Task{{project.id}}Create"
                             onclick="createTask(this)">

@@ -59,6 +59,7 @@ function updateTask(obj) {
     $('#' + deadlineFormId).toggle(250);
     $('#' + createDateId).toggle(250);
     $('#' + deadlineDateId).toggle(250);
+    $('#' + obj.id).toggleClass('pencil');
 };
 
 function updateTaskSend(obj) {
