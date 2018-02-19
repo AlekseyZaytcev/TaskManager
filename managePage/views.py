@@ -13,17 +13,21 @@ from managePage.models import Project, Task
 # Create your views here.
 def home(request):
     context = {}
+    # If user is authenticated, django render user page with user's tasks and projects. If not it is start page for create user.
     if request.user.is_authenticated:
         current_user = request.user
         projects_list = Project.objects.all().filter(user_id=current_user)
+        
+        # Here we take all tasks and filter it for current user in the home template.
         tasks_list = Task.objects.all().extra(order_by=['status'])
         for task in tasks_list:
+            # Need calculate progress percent for progress bar.
             timeForTask = task.deadline - task.createData
             today = datetime.date.today()
             timeSpend = today - task.createData
             try:
                 percent = timeSpend * 100 / timeForTask
-            except:
+            except: # if createDate == deadline we have time for task = 0 days. Here will be division by zero
                 percent = 0
             task.percent = percent
         context = {'projects_list': projects_list,
@@ -37,14 +41,17 @@ def create_user(request):
         password = request.POST['password']
         email = request.POST['email']
         
+        # If user exist:
         if User.objects.filter(username=username).exists():
             response_data = {'text': 'This username are used!'}
             return JsonResponse(response_data, status=404)
         
+        # If email exist:
         elif User.objects.filter(email=email).exists():
             response_data = {'text': 'This email are used!'}
             return JsonResponse(response_data, status=404)
         
+        # If all ok -> create user
         else:
             user = User.objects.create_user(username=username, email=email, password=password)
             user.save()
@@ -62,7 +69,7 @@ def user_login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             login(request, user)
-            # Redirect to a success page with ajax function.
+            # Redirect to a success page with ajax.done/ just reload page - location.reload();
             return HttpResponse(status=200)
         else:
             # Return an 'invalid login' error message.
@@ -71,12 +78,14 @@ def user_login(request):
             return HttpResponse(status=404)
 
 
+# If user is authenticated:
 @login_required
 def user_logout(request):
     logout(request)
     return redirect('home')
 
 
+# Get all projects for current user and load project's div with jquary
 def get_project(request):
     if request.method == 'GET':
         current_user = request.user
@@ -89,12 +98,15 @@ def create_project(request):
     if request.method == 'POST':
         current_user = request.user
         project_name = request.POST['projectName']
+        # Check if project name is empty
         if not project_name:
             response_data = {'text': '<strong>Alert!</strong> Don\'t use empty project name!'}
             return JsonResponse(response_data, status=404)
+        # Check if project name exist
         if Project.objects.filter(user_id=current_user, project_name=project_name).exists():
             response_data = {'text': '<strong>Alert!</strong> Project with same name exist!'}
             return JsonResponse(response_data, status=404)
+        # if all ok -> create project
         else:
             Project.objects.create(user_id=current_user,
                                    project_name=project_name)
@@ -104,6 +116,7 @@ def create_project(request):
 def delete_project(request):
     if request.method == 'POST':
         project_id = request.POST.get('projectId')
+        # take project with current id and delete it
         project = Project.objects.get(id=project_id)
         project.delete()
         return HttpResponse(status=200)
@@ -130,6 +143,7 @@ def update_project(request):
         # If project created it's OK:
         if Project.objects.filter(user_id=current_user, project_name=projectName).exists():
             return HttpResponse(status=200)
+        # if some thing wrong(server error or something...) and this project not exist
         else:
             response_data = {'text': 'Project name not updated!'}
             return JsonResponse(response_data, status=404)
@@ -159,9 +173,11 @@ def create_task(request):
         project_id = request.POST['project_id']
         project = Project.objects.get(id=project_id)
         
+        # if task is empty string
         if not task_name:
             response_data = {'text': '<strong>Please,</strong> fill task name!'}
             return JsonResponse(response_data, status=404)
+        # if this task exist
         if Task.objects.filter(project_id=project_id, task_name=task_name).exists():
             response_data = {'text': '<strong>Please!</strong> Don\'t duplicate task name!'}
             return JsonResponse(response_data, status=404)
@@ -185,21 +201,27 @@ def update_task(request):
         taskName = request.POST['updatedTaskName']
         task_id = request.POST['task_id']
         project_id = request.POST['project_id']
+        
+        # if task name is empty
         if not taskName:
             response_data = {'text': '<strong>Please,</strong> fill new task name!'}
             return JsonResponse(response_data, status=404)
+        # if task with same name exist( only in this project)
         if Task.objects.filter(project_id=project_id, task_name=taskName).exists():
             response_data = {'text': '<strong>Exist</strong> task with this name!'}
             return JsonResponse(response_data, status=404)
         
+        # update task in database
         Task.objects.filter(id=task_id).update(task_name=taskName)
         
+        # check if task updated
         if Task.objects.filter(id=task_id, task_name=taskName).exists():
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=404)
 
 
+# change task status from False(default) to True or backwards(if task already checked)
 def check_task(request):
     if request.method == 'POST':
         try:
@@ -214,7 +236,8 @@ def check_task(request):
             print(e)
             return HttpResponse(status=404)
             
-    
+
+# for change task position with drag and drop i shift task_id and task_name between two tasks.    
 def shift_task(request):
 
     if request.method == 'POST':
