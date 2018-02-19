@@ -48,6 +48,7 @@ function deleteProject(obj) {
         });
 };
 
+// show/hide project update form
 function updateProject(obj) {
     var baseId = obj.id.slice(0, -9);
     var textFieldId = baseId + 'Text';

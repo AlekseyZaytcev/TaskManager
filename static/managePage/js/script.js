@@ -1,3 +1,4 @@
+// this function need for get csrf token from cookie
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -35,6 +36,7 @@ function login(){
         });
 };
 
+// show login popover
 $("#login").popover({
     title: '<h4>Login in TaskManager</h4>',
     container: 'body',
@@ -45,6 +47,7 @@ $("#login").popover({
     }
 });
 
+// while enter pressed inside login input -> call function login() 
 $(document).on('submit', '#login-form', function(e) {
     e.preventDefault();
     login();
@@ -72,6 +75,7 @@ $(document).on('submit', '#createUser', function(e) {
         });
 });
 
+// disable Enter keypress event. Use in project and task inputs
 function disableEnter(e) {
     if (e.keyCode == 13) {return false;}    
 };

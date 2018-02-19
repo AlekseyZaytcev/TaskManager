@@ -1,4 +1,6 @@
 function createTask(obj) {
+	// obj.id.slice(0, -6) is 'Task/project_id/' string.
+	// obj.id is 'Task/project_id/update' string
     var listId = '#' + obj.id.slice(0, -6) + 'List';
     var formId = '#' + obj.id + 'Form';
     var data = $(formId + ' input').serialize();
@@ -12,6 +14,7 @@ function createTask(obj) {
         })
         .fail(function(response) {
             console.log("error while create task");
+            // get message form server and show it in alert
             var text = response.responseJSON.text;
             $("#warningAlertText").html(text);
             $('#warningAlert').show(200);
@@ -45,6 +48,7 @@ function deleteTask(obj) {
         });
 };
 
+// This function toggle some tags(show/hide) while pressed 'pencil' gliphicon in task form
 function updateTask(obj) {
     var taskId = (obj.id).slice(0, -7);
     var textFieldId = taskId + 'Text';
@@ -71,6 +75,7 @@ function updateTaskSend(obj) {
             data: data,
         })
         .done(function() {
+        	// if task updated -> toogle tags back
             var name = $('#' + updateFormId + ' input[name="updatedTaskName"]').val();
             $('#' + updateFormId + ' input[name="updatedTaskName"]').val('');
             var textFieldId = '#' + obj.id.slice(0, -6) + 'Text';
@@ -113,7 +118,7 @@ function updateDeadline(obj) {
         	var text = response['text'];
         	var deadline = response['deadline'];
         	
-        	$(progressId).val(percent);
+        	$(progressId).val(percent); // show task progress
         	
             $("#successAlertText").html(text);
             $(deadlineDateId).html(deadline);
@@ -142,8 +147,9 @@ function checkTask(obj) {
     		'task_id': task_id,
     		'csrfmiddlewaretoken': csrftoken,
     };
-    var serializedData = $.param(data)
-    
+    var serializedData = $.param(data) // this need for send get request.
+    // it is Post request if try to send object data = {key: value}
+
     $.ajax({
             url: '/checkTask/',
             type: 'POST',
