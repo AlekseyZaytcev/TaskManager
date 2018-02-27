@@ -23,6 +23,7 @@ Install python 3.6.4 for your OS.
 ```
 
 3) Activate virtualenv:
+
 Windows:
 ```
 > pathToVirtualenv\Scripts\activate
